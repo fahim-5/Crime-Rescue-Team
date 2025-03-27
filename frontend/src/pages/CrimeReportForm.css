@@ -1,0 +1,450 @@
+/* ========================= */
+/* Elegant Report Form Styling */
+/* ========================= */
+
+/* Apply a Google Font for a clean and modern look */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+/* Main content should take up all available space */
+.main-container {
+    flex: 1;
+    text-align: center;
+    padding: 20px;
+    min-height: 100vh;
+    font-family: 'Roboto', sans-serif; /* Modern Font */
+    margin-top: 300px;
+}
+
+/* Report Form */
+.report-form {
+    max-width: 700px;
+    margin: 100px 450px;
+    margin-top: 115px;
+    padding: 35px;
+    background-color: #fff;
+    border-radius: 12px;
+    border-left: 6px solid #8c111b; /* Red border */
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Form Heading */
+.report-form h2 {
+    font-size: 2.2em;
+    text-align: center;
+    color: #af0514; /* Red color for the heading */
+    font-weight: 700;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+/* Form Group */
+.report-form .form-group {
+    margin-bottom: 25px;
+}
+
+/* Labels */
+.report-form label {
+    display: block;
+    font-size: 1.1em;
+    font-weight: 500;
+    color: #333; /* Dark grey for a neutral, easy-to-read tone */
+    margin-bottom: 8px;
+    margin-top: 6px;
+    font-weight: 700;
+}
+
+/* Input Fields - Full Width */
+.report-form input[type="text"],
+.report-form input[type="datetime-local"],
+.report-form select,
+.report-form input[type="number"],
+.report-form textarea,
+.report-form input[type="file"] {
+    width: 100%; /* Make all inputs and selects full width */
+    padding: 12px 18px;
+    border: 2px solid #c41927bd; /* Red border */
+    border-radius: 7px;
+    font-size: 1.1em;
+    background: #f4f7f6; /* Light grey background for input fields */
+    color: #333;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    border-width: 1px;
+}
+
+/* Focus Effect */
+.report-form input:focus,
+.report-form select:focus,
+.report-form textarea:focus,
+.report-form input[type="file"]:focus {
+    border-color: #ff6b81; /* Lighter red on focus */
+    outline: none;
+    box-shadow: 0 0 8px rgba(255, 71, 87, 0.5); /* Slight red glow */
+}
+
+/* Textarea */
+.report-form textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+/* Custom Radio Button */
+.report-form .radio-group {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.report-form .radio-group input[type="radio"] {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #b4263b;
+    border-radius: 50%;
+    outline: none;
+    cursor: pointer;
+    background-color: transparent;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.report-form .radio-group input[type="radio"]:checked {
+    background-color: #b4263b;
+    border-color: #b4263b;
+}
+
+.report-form .radio-group label {
+    font-size: 1.1em;
+    font-weight: 600;
+    color: #2c3e50;
+    cursor: pointer;
+}
+
+
+/* Submit Button */
+.report-form button[type="submit"] {
+    background: #980d18; /* Red button */
+    color: white;
+    font-size: 1.3em;
+    font-weight: 600;
+    padding: 15px;
+    width: 100%;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    margin :15px;
+}
+
+.report-form button[type="submit"]:hover {
+    background: #b4263b; /* Lighter red on hover */
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.report-form button[type="submit"]:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Tweaks */
+@media (max-width: 768px) {
+    .report-form {
+        width: 90%;
+        padding: 30px;
+    }
+
+    .report-form h2 {
+        font-size: 1.8em;
+    }
+
+    .report-form input[type="text"],
+    .report-form input[type="datetime-local"],
+    .report-form select,
+    .report-form input[type="number"],
+    .report-form textarea {
+        font-size: 1em;
+    }
+}
+
+/* ========================= */
+/* Multimedia Upload Styling */
+/* ========================= */
+
+/* File Upload Section */
+.report-form .file-upload {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+/* Labels for File Uploads */
+.report-form .file-upload label {
+    font-size: 1.1em;
+    font-weight: 700;
+    color: #333;
+    display: block;
+    margin-bottom: 8px;
+}
+
+/* Preview Container */
+.report-form .preview-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+/* Image Preview */
+.report-form .preview-container img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 2px solid #ff4757;
+}
+
+/* Video Preview */
+.report-form .preview-container video {
+    width: 100%;
+    max-height: 200px;
+    border-radius: 8px;
+    border: 2px solid #ff4757;
+}
+
+/* Remove Button Styling */
+.remove-btn {
+    background-color: #ad1a26; /* Red color to indicate removal */
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    font-size: 0.9em;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.remove-btn:hover {
+    background-color: #ff6b81; /* Slightly lighter red on hover */
+    transform: scale(1.05);
+}
+
+.remove-btn:active {
+    transform: scale(1);
+}
+
+/* Location Input Styles */
+.location-input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.location-input-container input {
+    width: 100%;
+    padding-right: 40px; /* Space for the icon */
+    height: 40px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding-left: 10px;
+    font-size: 16px;
+}
+
+.map-button {
+    position: absolute;
+    right: 10px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.map-button svg {
+    color: #666565;
+    font-size: 20px;
+}
+
+.map-button:hover svg {
+    color: #696666;
+}
+
+
+
+/* Alert Messages */
+.alert {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 15px 20px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  animation: slideIn 0.3s ease-out;
+  max-width: 400px;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.alert-success {
+  background-color: #4caf50;
+  color: white;
+}
+
+.alert-error {
+  background-color: #f44336;
+  color: white;
+}
+
+.alert svg {
+  margin-right: 10px;
+  font-size: 1.2rem;
+}
+
+.alert-close {
+  margin-left: 15px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0 5px;
+}
+
+/* File Input Reset */
+input[type="file"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: #f9f9f9;
+}
+
+/* Preview Items */
+.preview-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.preview-item {
+  position: relative;
+  width: 100px;
+  height: 100px;
+}
+
+.preview-image, .preview-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.remove-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* Alert Messages - Centered */
+.alert {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px 30px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    animation: fadeIn 0.3s ease-out;
+    max-width: 80%;
+    width: 350px;
+    text-align: center;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translate(-50%, -60%); }
+    to { opacity: 1; transform: translate(-50%, -50%); }
+  }
+  
+  .alert-success {
+    background-color: #4caf50;
+    color: white;
+    border-left: 5px solid #388e3c;
+  }
+  
+  .alert-error {
+    background-color: #f44336;
+    color: white;
+    border-left: 5px solid #d32f2f;
+  }
+  
+  .alert-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .alert svg {
+    margin-right: 12px;
+    font-size: 1.5rem;
+  }
+  
+  .alert-message {
+    flex-grow: 1;
+    font-size: 1.1rem;
+    font-weight: 500;
+  }
+  
+  .alert-close {
+    margin-left: 15px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.3rem;
+    cursor: pointer;
+    padding: 0 5px;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+  }
+  
+  .alert-close:hover {
+    opacity: 1;
+  }
+  
+  /* Backdrop effect */
+  .alert-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    animation: fadeIn 0.3s ease-out;
+  }

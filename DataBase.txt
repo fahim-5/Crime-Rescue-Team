@@ -1,0 +1,31 @@
+CREATE TABLE users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  full_name VARCHAR(255) NOT NULL,
+  username VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  national_id VARCHAR(255) NOT NULL,
+  passport VARCHAR(255),
+  mobile_no VARCHAR(20) NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  role VARCHAR(50) NOT NULL,
+  address VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+
+                      report table
+ -----------------------------------------------------------------------------------------------------------------                
+
+CREATE TABLE crime_reports (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  location VARCHAR(255) NOT NULL,
+  time DATETIME NOT NULL,
+  crime_type VARCHAR(50) NOT NULL,
+  num_criminals INT NOT NULL,
+  victim_gender VARCHAR(20) NOT NULL,
+  armed VARCHAR(10) NOT NULL,
+  photos JSON,  -- Stores paths like ["uploads/photo-123.jpg"]
+  videos JSON,  -- Stores paths like ["uploads/video-456.mp4"]
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
