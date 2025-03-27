@@ -49,7 +49,7 @@ const LoginForm = () => {
         setTimeout(() => {
           switch(user.role) {
             case 'admin':
-              navigate('/admin-dashboard');
+              navigate('/admin/dashboard');
               break;
             case 'police':
               navigate('/police-dashboard');
