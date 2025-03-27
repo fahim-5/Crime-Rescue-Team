@@ -29,3 +29,7 @@ CREATE TABLE crime_reports (
   videos JSON,  -- Stores paths like ["uploads/video-456.mp4"]
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+
+             request table
+--------------------------------------------------------

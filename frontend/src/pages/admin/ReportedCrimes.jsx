@@ -1,5 +1,6 @@
 import React from 'react';
-import './ReportedCrimes.css';
+import "./ReportedCrimes.css";
+
 
 const ReportedCrimes = () => {
   // Sample crime data

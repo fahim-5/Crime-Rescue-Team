@@ -18,9 +18,10 @@
 /* Report Form */
 .report-form {
     max-width: 700px;
-    margin: 100px 450px;
+    margin: 100px 350px;
     margin-top: 115px;
     padding: 35px;
+    width: 60%;
     background-color: #fff;
     border-radius: 12px;
     border-left: 6px solid #8c111b; /* Red border */
@@ -256,9 +257,10 @@
 
 .map-button {
     position: absolute;
-    right: 10px;
-    background: transparent;
-    border: none;
+    right: 0px;
+    background: rgb(217, 118, 118);
+    /* border: 2px solid rgb(131, 48, 48); */
+    /* margin: 3px; */
     cursor: pointer;
     display: flex;
     align-items: center;
