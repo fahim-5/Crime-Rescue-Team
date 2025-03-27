@@ -33,3 +33,26 @@ CREATE TABLE crime_reports (
 
              request table
 --------------------------------------------------------
+CREATE TABLE requests(
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  full_name VARCHAR(255) NOT NULL,
+  username VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  national_id VARCHAR(255) NOT NULL,
+  passport VARCHAR(255),
+  mobile_no VARCHAR(20) NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  role VARCHAR(50) NOT NULL,
+  address VARCHAR(255) NOT NULL,
+  police_id VARCHAR(100) UNIQUE,  -- Unique ID for police personnel
+  badge_number VARCHAR(50) UNIQUE, -- Official badge number
+  rank VARCHAR(100),  -- Rank of the officer
+  station VARCHAR(255),  -- Assigned police station
+  joining_date DATE,  -- Date of joining the force
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+
+----------------------------------------------------------------------------------------------------
+
