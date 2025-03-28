@@ -1,322 +1,486 @@
-/* notifications-container */
-.notifications-container {
-    max-width: 800px;
-    margin: 50px auto;
-    padding: 20px;
-    text-align: left;
-    min-height: 100vh;
-    margin-top: 105px;
-   
-    
-}
-
-body{
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-}
-
-/* Page heading */
-.notifications-container h1 {
-    text-align: center;
-    font-size: 2em;
-    color: #2c3e50;
-    margin-bottom: 20px;
-}
-
-/* Individual notification box */
-.notification {
-    background-color: #ffffff;
-    border-left: 5px solid #e74c3c;
-    padding: 15px;
-    margin-bottom: 15px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    position: relative; /* For button positioning */
-}
-
-/* Notification text */
-.notification p {
-    font-size: 1.1em;
-    color: #333;
-    margin: 0;
-}
-
-/* Timestamp */
-.timestamp {
-    display: block;
-    font-size: 0.9em;
-    color: #777;
-    margin-top: 5px;
-}
-
-/* Button styles */
-.details-btn {
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-    padding: 12px 25px;
-    background-color: #007bff; /* Default background */
-    color: white;
-    border: none;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 1em;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Default shadow */
-    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-    cursor: pointer;
-}
-
-/* Hover Effect */
-.details-btn:hover {
-    background-color: #0056b3; /* Darker blue on hover */
-    transform: translateY(-3px); /* Lift the button for a 3D effect */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Deeper shadow on hover */
-}
-
-/* Active (Click) Effect */
-.details-btn:active {
-    transform: translateY(1px); /* Pressed effect */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Lighter shadow when clicked */
-}
-
-/* Focus Effect (Accessibility) */
-.details-btn:focus {
-    outline: none; /* Remove default outline */
-    box-shadow: 0 0 5px rgba(6, 11, 15, 0.8); /* Light blue glow on focus */
-}
-
-/* Dynamic Background using CSS Variables */
+/* Crime Alerts Dashboard - Professional Styles */
 :root {
-    --btn-default-bg: #007bff;
-    --btn-hover-bg: #0056b3;
-    --btn-focus-glow: rgba(0, 123, 255, 0.8);
+  /* Color Palette */
+  --primary: #2c3e50;
+  --primary-light: #3d566e;
+  --secondary: #a72c40;
+  --success: #27ae60;
+  --warning: #f39c12;
+  --danger: #e74c3c;
+  --info: #3498db;
+  
+  /* Status Colors */
+  --active-alert: #e74c3c;
+  --resolved-case: #27ae60;
+  
+  /* Crime Type Colors */
+  --robbery: #c0392b;
+  --burglary: #8e44ad;
+  --assault: #e67e22;
+  --theft: #16a085;
+  
+  /* Neutrals */
+  --white: #ffffff;
+  --gray-50: #f8f9fa;
+  --gray-100: #f1f3f5;
+  --gray-200: #e9ecef;
+  --gray-300: #dee2e6;
+  --gray-400: #ced4da;
+  --gray-500: #adb5bd;
+  --gray-600: #868e96;
+  --gray-700: #495057;
+  --gray-800: #343a40;
+  --gray-900: #212529;
+  
+  /* Spacing */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  
+  /* Typography */
+  --font-sans: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  --font-mono: SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  
+  /* Border Radius */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 10px;
+  --radius-full: 9999px;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1);
+  
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow: 0.45s ease;
 }
 
-/* Responsive Styling (Optional) */
-@media (max-width: 600px) {
-    .details-btn {
-        padding: 8px 15px; /* Adjust padding for small screens */
-        font-size: 0.9em; /* Slightly smaller text */
-    }
+/* Base Styles */
+.crime-alerts-container {
+  font-family: var(--font-sans);
+  color: var(--gray-800);
+  line-height: 1.5;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-xl);
 }
 
-/* Hover on Notification */
-.notification:hover .details-btn {
-    background-color: #ff7f50; /* Change button color when notification is hovered */
-    transform: translateY(-5px); /* Enhance hover effect on button */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Deeper shadow when hovering notification */
+/* Header Styles */
+.alerts-header {
+  margin-bottom: var(--space-xl);
 }
 
-
-
-
-
-
-
-
-
-
-
-/* Basic pop-up styling */
-
-
-/* Crime Details Pop-up */
-.popup {
-    display: none; /* Hidden by default */
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7); /* Darkened background */
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
+.alerts-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: var(--space-sm);
 }
 
-/* Show the pop-up when the 'active' class is added */
-.popup.active {
-    display: flex;
+.subtitle {
+  color: var(--gray-600);
+  font-size: 1rem;
+  margin-bottom: var(--space-lg);
 }
 
-/* Pop-up content container */
-.popup-content {
-    background: #f8f9fa; /* Light background */
-    width: 60%; /* Wider for readability */
-    max-width: 700px;
-    padding: 30px;
-    border-radius: 15px;
-    border: 3px solid #444; /* Bold border */
-    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
-    position: relative;
-    text-align: left;
+/* Filter Controls */
+.filter-controls {
+  display: flex;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-lg);
 }
 
-/* Each section inside the pop-up */
-.popup-content p {
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: 8px;
-    font-size: 1.2em;
+.filter-btn {
+  padding: var(--space-sm) var(--space-md);
+  background: var(--gray-100);
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
 }
 
-/* Background colors for different sections */
-.popup-content p:nth-child(odd) {
-    background: #ffeded; /* Light red for contrast */
+.filter-btn:hover {
+  background: var(--gray-200);
 }
 
-.popup-content p:nth-child(even) {
-    background: #e7f7e7; /* Light green for readability */
+.filter-btn.active {
+  background: var(--primary);
+  color: var(--white);
 }
 
-/* Close button style */
-.close-btn {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 2em;
-    font-weight: bold;
-    color: white;
-    background: red;
-    border: none;
-    padding: 10px 15px;
-    cursor: pointer;
-    border-radius: 50%;
-    transition: 0.3s ease;
+/* Alerts List */
+.alerts-list {
+  display: grid;
+  gap: var(--space-md);
 }
 
-.close-btn:hover {
-    background: darkred;
+/* Alert Card */
+.alert-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
 }
 
-
-/* General Styles */
-.notifications-container {
-    text-align: center;
-    padding: 20px;
+.alert-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
 }
 
-/* Notification Box */
-.notification {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    padding: 15px;
-    margin: 10px auto;
-    width: 80%;
-    max-width: 500px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+.alert-card.active {
+  border-left: 4px solid var(--active-alert);
 }
 
-/* Details Button */
+.alert-card.resolved {
+  border-left: 4px solid var(--resolved-case);
+}
+
+.alert-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-md);
+  background: var(--gray-50);
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.alert-type {
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--white);
+}
+
+.alert-type.robbery {
+  background: var(--robbery);
+}
+
+.alert-type.burglary {
+  background: var(--burglary);
+}
+
+.alert-type.assault {
+  background: var(--assault);
+}
+
+.alert-type.theft {
+  background: var(--theft);
+}
+
+.alert-time {
+  font-size: 0.85rem;
+  color: var(--gray-600);
+}
+
+.alert-status {
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.alert-status.active {
+  background: rgba(231, 76, 60, 0.1);
+  color: var(--active-alert);
+}
+
+.alert-status.resolved {
+  background: rgba(39, 174, 96, 0.1);
+  color: var(--resolved-case);
+}
+
+.alert-body {
+  padding: var(--space-md);
+}
+
+.alert-location {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: var(--space-sm);
+}
+
+.alert-location svg {
+  color: var(--secondary);
+}
+
+.alert-description {
+  color: var(--gray-700);
+  margin: 0;
+}
+
+.alert-footer {
+  padding: var(--space-md);
+  border-top: 1px solid var(--gray-200);
+  display: flex;
+  justify-content: flex-end;
+}
+
 .details-btn {
-    background-color: #e94560;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    margin-top: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.3s;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--primary);
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background var(--transition-fast);
 }
 
 .details-btn:hover {
-    background-color: #ff4757;
+  background: var(--primary-light);
 }
 
+.details-btn svg {
+  width: 16px;
+  height: 16px;
+}
 
+/* No Alerts State */
+.no-alerts {
+  text-align: center;
+  padding: var(--space-xl);
+  color: var(--gray-600);
+}
 
-
-
-/* Popup Overlay */
-.popup {
+.no-alerts {
+    text-align: center;
+    padding: var(--space-xl);
+    color: var(--gray-600);
+  }
+  
+  .no-alerts svg {
+    color: var(--gray-400);
+    margin-bottom: var(--space-md);
+  }
+  
+  .no-alerts h3 {
+    font-size: 1.25rem;
+    color: var(--gray-700);
+    margin-bottom: var(--space-sm);
+  }
+  
+  .no-alerts p {
+    margin: 0;
+  }
+  
+  /* Alert Modal Styles */
+  .alert-modal {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.6);
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     z-index: 1000;
-    /* backdrop-filter: blur(5px); */
-    transition: opacity 0.3s ease-in-out;
-}
-
-/* Popup Content */
-.popup-content {
-    background: rgba(255, 255, 255, 0.95); /* Light glass effect */
-    padding: 25px;
-    border-radius: 12px;
-    width: 90%;
-    max-width: 420px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-    text-align: left;
-    animation: fadeIn 0.3s ease-in-out;
+    padding: var(--space-md);
+  }
+  
+  .modal-content {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xl);
+    width: 100%;
+    max-width: 700px;
+    max-height: 90vh;
+    overflow-y: auto;
     position: relative;
-}
-
-/* Popup Heading */
-.popup-content h1 {
-    font-size: 1.8em;
-    font-weight: bold;
-    margin-bottom: 15px;
-    color: #e74c3c;
-    border-bottom: 2px solid #e74c3c;
-    padding-bottom: 10px;
-    text-align: center;
-}
-
-/* Crime Details Text */
-.popup-content p {
-    font-size: 1.1em;
-    color: #333;
-    margin: 8px 0;
-    padding: 10px;
-    border-radius: 8px;
-    background: #f8f9fa;
-    transition: background 0.3s ease-in-out;
-}
-
-/* Alternating background for better readability */
-.popup-content p:nth-child(odd) {
-    background: #ffeeee;
-}
-
-.popup-content p:nth-child(even) {
-    background: #e7f7e7;
-}
-
-/* Close Button */
-.close-btn {
+  }
+  
+  .close-modal {
     position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 22px;
-    font-weight: bold;
-    color: white;
-    background: #e74c3c;
+    top: var(--space-md);
+    right: var(--space-md);
+    background: none;
     border: none;
-    padding: 8px 12px;
+    padding: var(--space-xs);
     cursor: pointer;
-    border-radius: 50%;
-    transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
-}
-
-.close-btn:hover {
-    background: darkred;
-    transform: scale(1.1);
-}
-
-/* Smooth Fade-in Animation */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: scale(0.9);
+    color: var(--gray-500);
+    transition: color var(--transition-fast);
+  }
+  
+  .close-modal:hover {
+    color: var(--gray-700);
+  }
+  
+  .close-modal svg {
+    display: block;
+  }
+  
+  .modal-header {
+    padding: var(--space-xl) var(--space-xl) var(--space-md);
+    border-bottom: 1px solid var(--gray-200);
+  }
+  
+  .modal-header h2 {
+    font-size: 1.5rem;
+    color: var(--primary);
+    margin-bottom: var(--space-sm);
+  }
+  
+  .modal-status {
+    display: inline-block;
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: var(--radius-full);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .modal-status.active {
+    background: rgba(231, 76, 60, 0.1);
+    color: var(--active-alert);
+  }
+  
+  .modal-status.resolved {
+    background: rgba(39, 174, 96, 0.1);
+    color: var(--resolved-case);
+  }
+  
+  .modal-body {
+    padding: var(--space-xl);
+  }
+  
+  .detail-group {
+    margin-bottom: var(--space-lg);
+  }
+  
+  .detail-group:last-child {
+    margin-bottom: 0;
+  }
+  
+  .detail-group h3 {
+    font-size: 1.1rem;
+    color: var(--primary);
+    margin-bottom: var(--space-md);
+    padding-bottom: var(--space-sm);
+    border-bottom: 1px solid var(--gray-200);
+  }
+  
+  .detail-group p {
+    margin-bottom: var(--space-sm);
+  }
+  
+  .detail-group p:last-child {
+    margin-bottom: 0;
+  }
+  
+  .detail-group p strong {
+    color: var(--gray-900);
+  }
+  
+  .modal-footer {
+    padding: var(--space-md) var(--space-xl);
+    border-top: 1px solid var(--gray-200);
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--space-sm);
+  }
+  
+  .action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius-md);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    border: 1px solid transparent;
+  }
+  
+  .action-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .action-btn.primary {
+    background: var(--primary);
+    color: var(--white);
+    border-color: var(--primary);
+  }
+  
+  .action-btn.primary:hover {
+    background: var(--primary-light);
+    border-color: var(--primary-light);
+  }
+  
+  .action-btn.secondary {
+    background: var(--white);
+    color: var(--primary);
+    border-color: var(--gray-300);
+  }
+  
+  .action-btn.secondary:hover {
+    background: var(--gray-50);
+    border-color: var(--gray-400);
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .crime-alerts-container {
+      padding: var(--space-md);
     }
-    to {
-        opacity: 1;
-        transform: scale(1);
+    
+    .filter-controls {
+      flex-wrap: wrap;
     }
-}
+    
+    .modal-body {
+      padding: var(--space-lg);
+    }
+    
+    .modal-footer {
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+    
+    .action-btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .alert-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-sm);
+    }
+    
+    .alert-time {
+      margin-left: 0;
+    }
+    
+    .modal-body {
+      padding: var(--space-md);
+    }
+    
+    .detail-group h3 {
+      font-size: 1rem;
+    }
+  }

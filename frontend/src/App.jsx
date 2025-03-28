@@ -14,24 +14,22 @@ import CrimeAlerts from "./pages/CrimeAlerts";
 import About from "./pages/About";
 import PrivateRoute from "./components/PrivateRoute";
 
-
-
-
 import Validations from "./pages/admin/Validations";
 import Start from "./pages/Start";
 import PoliceSignup from "./pages/PoliceSignup";
 import PublicSignup from "./pages/PublicSignup";
-
-
 
 import AdminDashboard from "./pages/admin/AdminDeshboard";
 import ReportedCrimes from "./pages/admin/ReportedCrimes";
 import Analytics from "./pages/admin/Analytics";
 import Settings from "./pages/admin/Settings";
 import AdminSignup from "./pages/AdminSignup";
-
-
-
+import PoliceDashboard from "./pages/police/PoliceDashboard";
+import PoliceReports from "./pages/police/PoliceReports";
+import PoliceSettings from "./pages/police/PoliceSettings";
+import ResolvedCases from "./pages/police/ResolvedCases";
+import PendingCases from "./pages/police/PendingCases";
+import UserReports from "./pages/UserReports";
 
 function App() {
   return (
@@ -39,17 +37,44 @@ function App() {
       <Router>
         <RoleBasedNavbar />
         <Routes>
+          {/* starting routes  */}
           <Route path="/start" element={<Start />} />
+           
+
+           {/* signup routes  */}
           <Route path="/police-signup" element={<PoliceSignup />} />
           <Route path="/admin-signup" element={<AdminSignup />} />
           <Route path="/public-signup" element={<PublicSignup />} />
-          <Route path="/home" element={<Home />} />
+           
+          {/* login routes  */}
           <Route path="/" element={<LoginForm />} />
+           
+
+           {/* public routes  */}
+          <Route path="/home" element={<Home />} />
           <Route path="/report" element={<CrimeReportForm />} />
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/alert" element={<CrimeAlerts />} />
           <Route path="/about" element={<About />} />
-          {/* admin routes */}
+          <Route path="/reports" element={<UserReports />} />
+
+
+
+
+           
+           {/* police routes  */}
+          <Route path="/police/dashboard" element={<PoliceDashboard />} />
+          <Route path="/police/reports" element={<PoliceReports />} />
+          <Route path="/police/analytics" element={<Analytics />} />
+          <Route path="/police/settings" element={<PoliceSettings />} />
+          <Route path="/police/pending" element={<PendingCases />} />
+          <Route path="/police/resolved" element={<ResolvedCases />} />
+
+
+
+
+      
+          {/* admin routes  */}
           <Route
             path="/admin/validations"
             element={
@@ -91,12 +116,12 @@ function App() {
             }
           />
         </Routes>
+
         <Footer />
       </Router>
     </AuthProvider>
   );
 }
-
 
 const RoleBasedNavbar = () => {
   const { user } = useAuth();
@@ -108,7 +133,5 @@ const RoleBasedNavbar = () => {
     <NavbarPublic />
   );
 };
-
-
 
 export default App;
