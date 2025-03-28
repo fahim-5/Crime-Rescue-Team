@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./Signup.css"; // Using the same CSS file as SignupForm
+import "./Signup.css";
 
 const AdminSignup = () => {
   const [formData, setFormData] = useState({
@@ -13,7 +13,6 @@ const AdminSignup = () => {
     mobile: "",
     password: "",
     confirmPassword: "",
-    role: "admin",
     address: "",
   });
 
@@ -23,11 +22,13 @@ const AdminSignup = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    // Don't trim password fields
-    const newValue = (name === 'password' || name === 'confirmPassword') 
-      ? value 
-      : value.trim();
-    setFormData({ ...formData, [name]: newValue });
+    setFormData((prev) => ({
+      ...prev,
+      [name]:
+        name === "password" || name === "confirmPassword"
+          ? value
+          : value.trim(),
+    }));
   };
 
   const handleSubmit = async (e) => {
@@ -36,45 +37,47 @@ const AdminSignup = () => {
     setSuccess("");
 
     // Validate required fields
-    if (!formData.full_name || !formData.username || !formData.email || 
-        !formData.national_id || !formData.mobile || !formData.password || 
-        !formData.confirmPassword || !formData.address) {
-      setError("All fields are required.");
+    const requiredFields = [
+      "full_name",
+      "username",
+      "email",
+      "national_id",
+      "mobile",
+      "password",
+      "confirmPassword",
+      "address",
+    ];
+    const missingFields = requiredFields.filter((field) => !formData[field]);
+
+    if (missingFields.length > 0) {
+      setError(`Missing required fields: ${missingFields.join(", ")}`);
       return;
     }
 
-    // Validate password match
     if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match.");
+      setError("Passwords do not match");
       return;
     }
 
-    // Validate password strength
     if (formData.password.length < 8) {
-      setError("Password must be at least 8 characters.");
+      setError("Password must be at least 8 characters");
       return;
     }
 
-    // Validate address format
     if (!/^[a-zA-Z\s]+-[a-zA-Z\s]+$/.test(formData.address)) {
-      setError("Address must be in format: District-Thana (e.g., Dhaka-Mirpur).");
+      setError(
+        "Address must be in format: District-Thana (e.g., Dhaka-Mirpur)"
+      );
       return;
     }
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/public-admin/signup",
+        "http://localhost:5000/admin/signup",
         {
-          full_name: formData.full_name.trim(),
-          username: formData.username.trim().toLowerCase(),
-          email: formData.email.trim().toLowerCase(),
-          national_id: formData.national_id.trim(),
-          mobile_no: formData.mobile.trim(), // Correct field name for backend
-          address: formData.address.trim(),
-          password: formData.password, // No trim
-          confirmPassword: formData.confirmPassword, // No trim
+          ...formData,
+          mobile_no: formData.mobile, // Map to backend field name
           role: "admin",
-          ...(formData.passport && { passport: formData.passport.trim() })
         },
         {
           headers: { "Content-Type": "application/json" },
@@ -82,21 +85,20 @@ const AdminSignup = () => {
         }
       );
 
-      if (response.status === 201) {
-        setSuccess("Account created successfully! Redirecting...");
+      if (response.data.success) {
+        setSuccess(response.data.message);
         setTimeout(() => navigate("/"), 2000);
       }
     } catch (err) {
       console.error("Registration error:", err.response?.data);
       setError(
-        err.response?.data?.message || 
-        err.response?.data?.error || 
-        "Registration failed. Please try again."
+        err.response?.data?.message ||
+          err.response?.data?.error ||
+          "Registration failed. Please try again."
       );
-      setTimeout(() => setError(""), 5000);
     }
   };
-  
+
   return (
     <main className="auth-signup-container">
       <section className="auth-signup-box">
@@ -161,15 +163,10 @@ const AdminSignup = () => {
               onChange={handleChange}
               required
             />
-
-           
           </div>
 
           <div className="auth-right">
-
-          
-            
-          <label className="auth-label">Address (District-Thana)</label>
+            <label className="auth-label">Address (District-Thana)</label>
             <input
               type="text"
               name="address"
@@ -189,10 +186,6 @@ const AdminSignup = () => {
               value={formData.passport}
               onChange={handleChange}
             />
-
-            
-
-            
 
             <label className="auth-label">Password</label>
             <input
@@ -216,8 +209,6 @@ const AdminSignup = () => {
               required
             />
           </div>
-
-          <input type="hidden" name="role" value="admin" />
 
           <button type="submit" className="auth-signup-button">
             Sign Up

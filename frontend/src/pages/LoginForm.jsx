@@ -16,6 +16,7 @@ const LoginForm = () => {
     setCredentials({ ...credentials, [name]: value });
   };
 
+
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -28,7 +29,7 @@ const LoginForm = () => {
   
     try {
       const response = await axios.post(
-        "http://localhost:5000/public-admin/login",
+        "http://localhost:5000/login",
         {
           email: credentials.email.toLowerCase().trim(),
           password: credentials.password,
@@ -66,6 +67,8 @@ const LoginForm = () => {
     }
   };
 
+
+  
   return (
     <main className="auth-container">
       <section className="auth-box">

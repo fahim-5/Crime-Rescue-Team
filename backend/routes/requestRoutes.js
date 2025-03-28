@@ -19,5 +19,6 @@ router.post(
 
 router.get("/requests", requestController.getAllPoliceRequests)
 
+router.get("/requests/:id", requestController.getPoliceRequestByPoliceId);
 
 module.exports = router;

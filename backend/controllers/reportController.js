@@ -56,6 +56,7 @@ const getAllReports = async (req, res) => {
   }
 };
 
+
 module.exports = {
   createReport,
   getAllReports

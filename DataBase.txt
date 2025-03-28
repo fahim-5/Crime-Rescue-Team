@@ -1,20 +1,80 @@
 CREATE TABLE users (
   id INT AUTO_INCREMENT PRIMARY KEY,
   full_name VARCHAR(255) NOT NULL,
-  username VARCHAR(255) NOT NULL,
-  email VARCHAR(255) NOT NULL,
-  national_id VARCHAR(255) NOT NULL,
+  username VARCHAR(255) NOT NULL UNIQUE,
+  email VARCHAR(255) NOT NULL UNIQUE,
+  national_id VARCHAR(255) NOT NULL UNIQUE,
   passport VARCHAR(255),
   mobile_no VARCHAR(20) NOT NULL,
   password VARCHAR(255) NOT NULL,
-  role VARCHAR(50) NOT NULL,
+  role ENUM('public', 'police', 'admin') NOT NULL DEFAULT 'public',
   address VARCHAR(255) NOT NULL,
+  status ENUM('pending', 'approved', 'rejected') NOT NULL DEFAULT 'pending',
+  police_id VARCHAR(50) UNIQUE,  -- Unique ID for police officers
+  station VARCHAR(255),          -- Assigned police station
+  rank VARCHAR(100),             -- Rank of the police officer
+  badge_number VARCHAR(50) UNIQUE, -- Unique badge number
+  joining_date DATE,             -- Date of joining the force
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  
+  INDEX idx_status (status),
+  INDEX idx_role (role),
+  INDEX idx_police_id (police_id),
+  INDEX idx_badge_number (badge_number)
 );
 
 
-                      report table
+
+Public and admin table
+-----------------------------------------------------------------
+CREATE TABLE public (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  full_name VARCHAR(255) NOT NULL,
+  username VARCHAR(255) NOT NULL UNIQUE,
+  email VARCHAR(255) NOT NULL UNIQUE,
+  national_id VARCHAR(255) NOT NULL UNIQUE,
+  passport VARCHAR(255),
+  mobile_no VARCHAR(20) NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  address VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  
+  INDEX idx_email (email),
+  INDEX idx_national_id (national_id)
+);
+
+
+
+police table
+--------------------------------------------------
+CREATE TABLE police (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  full_name VARCHAR(255) NOT NULL,
+  username VARCHAR(255) NOT NULL UNIQUE,
+  email VARCHAR(255) NOT NULL UNIQUE,
+  national_id VARCHAR(255) NOT NULL UNIQUE,
+  passport VARCHAR(255),
+  mobile_no VARCHAR(20) NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  address VARCHAR(255) NOT NULL,
+  police_id VARCHAR(50) UNIQUE,       -- Unique ID for police officers
+  station VARCHAR(255),               -- Assigned police station
+  rank VARCHAR(100),                  -- Rank of the police officer
+  badge_number VARCHAR(50) UNIQUE,    -- Unique badge number
+  joining_date DATE,                  -- Date of joining the force
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  
+  INDEX idx_police_id (police_id),
+  INDEX idx_badge_number (badge_number),
+  INDEX idx_station (station),
+  INDEX idx_rank (rank)
+);
+
+
+ report table
  -----------------------------------------------------------------------------------------------------------------                
 
 CREATE TABLE crime_reports (
@@ -31,28 +91,4 @@ CREATE TABLE crime_reports (
 );
 
 
-             request table
---------------------------------------------------------
-CREATE TABLE requests(
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  full_name VARCHAR(255) NOT NULL,
-  username VARCHAR(255) NOT NULL,
-  email VARCHAR(255) NOT NULL,
-  national_id VARCHAR(255) NOT NULL,
-  passport VARCHAR(255),
-  mobile_no VARCHAR(20) NOT NULL,
-  password VARCHAR(255) NOT NULL,
-  role VARCHAR(50) NOT NULL,
-  address VARCHAR(255) NOT NULL,
-  police_id VARCHAR(100) UNIQUE,  -- Unique ID for police personnel
-  badge_number VARCHAR(50) UNIQUE, -- Official badge number
-  rank VARCHAR(100),  -- Rank of the officer
-  station VARCHAR(255),  -- Assigned police station
-  joining_date DATE,  -- Date of joining the force
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
-
-
-----------------------------------------------------------------------------------------------------
 

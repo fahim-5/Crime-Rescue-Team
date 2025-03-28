@@ -60,33 +60,63 @@ const requestController = {
     }
   },
 
+  getAllPoliceRequests: async (req, res) => {
+    try {
+      const { status, page = 1, limit = 10 } = req.query;
+      
+      const requests = status 
+        ? await RequestModel.getPoliceRequestsByStatus(status)
+        : await RequestModel.getAllPoliceRequests();
 
-getAllPoliceRequests: async (req, res) => {
-  try {
-    const { status, page = 1, limit = 10 } = req.query;
-    
-    const requests = status 
-      ? await RequestModel.getPoliceRequestsByStatus(status)
-      : await RequestModel.getAllPoliceRequests();
+      const startIndex = (page - 1) * limit;
+      const endIndex = page * limit;
+      const paginatedRequests = requests.slice(startIndex, endIndex);
 
-    const startIndex = (page - 1) * limit;
-    const endIndex = page * limit;
-    const paginatedRequests = requests.slice(startIndex, endIndex);
+      res.status(200).json(paginatedRequests);
 
-    res.status(200).json(paginatedRequests);
+    } catch (error) {
+      console.error('Error in getAllPoliceRequests:', error);
+      res.status(500).json({
+        success: false,
+        message: 'Failed to retrieve police requests',
+        error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  },
 
-  } catch (error) {
-    console.error('Error in getAllPoliceRequests:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Failed to retrieve police requests',
-      error: process.env.NODE_ENV === 'development' ? error.message : undefined
-    });
+  getPoliceRequestByPoliceId: async (req, res) => {
+    try {
+      const { policeId } = req.params;
+      
+      if (!policeId) {
+        return res.status(400).json({
+          success: false,
+          message: "Missing police ID parameter"
+        });
+      }
+
+      const request = await RequestModel.getPoliceRequestByPoliceId(policeId);
+      
+      if (!request) {
+        return res.status(404).json({
+          success: false,
+          message: "Police request not found for the given police ID"
+        });
+      }
+
+      res.status(200).json({
+        success: true,
+        data: request
+      });
+    } catch (error) {
+      console.error("Error fetching police request by police ID:", error);
+      res.status(500).json({
+        success: false,
+        message: "Failed to fetch police request",
+        error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
   }
-}
-
-}
+};
 
 module.exports = requestController;
-
-

@@ -80,6 +80,29 @@ const RequestModel = {
       throw err;
     }
   },
+
+
+
+  getPoliceRequestByPoliceId: async (policeId) => {
+    const connection = await pool.getConnection();
+    try {
+      const query = `
+        SELECT * FROM requests 
+        WHERE police_id = ? AND role = 'police'
+        LIMIT 1
+      `;
+
+      const [requests] = await connection.execute(query, [policeId]);
+      return requests[0] || null;
+    } catch (err) {
+      console.error("Database Error:", err.sqlMessage || err);
+      throw err;
+    } finally {
+      if (connection) await connection.release();
+    }
+  },
+
 };
+
 
 module.exports = RequestModel;

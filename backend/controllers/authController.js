@@ -9,19 +9,20 @@ const registerUser = async (req, res) => {
       username, 
       email, 
       national_id, 
-      mobile_no,  // Changed from mobile to mobile_no
+      mobile_no,
       password, 
       confirmPassword, 
-      address, 
-      role 
+      address,
+      passport
     } = req.body;
 
     // Validate required fields
     if (!full_name || !username || !email || !national_id || !mobile_no || 
-        !password || !confirmPassword || !address || !role) {
+        !password || !confirmPassword || !address) {
       return res.status(400).json({ 
-        message: "All fields are required.",
-        fields: {
+        success: false,
+        message: "All fields are required",
+        missingFields: {
           full_name: !full_name,
           username: !username,
           email: !email,
@@ -29,61 +30,70 @@ const registerUser = async (req, res) => {
           mobile_no: !mobile_no,
           password: !password,
           confirmPassword: !confirmPassword,
-          address: !address,
-          role: !role
+          address: !address
         }
       });
     }
 
     // Validate password match
     if (password !== confirmPassword) {
-      return res.status(400).json({ message: "Passwords do not match." });
+      return res.status(400).json({ 
+        success: false,
+        message: "Passwords do not match" 
+      });
     }
 
     // Validate address format
-    const addressPattern = /^[a-zA-Z\s]+-[a-zA-Z\s]+$/;
-    if (!addressPattern.test(address)) {
+    if (!/^[a-zA-Z\s]+-[a-zA-Z\s]+$/.test(address)) {
       return res.status(400).json({
-        message: "Enter a valid address in the format: District-Thana (e.g., Dhaka-Mirpur).",
+        success: false,
+        message: "Address must be in format: District-Thana (e.g., Dhaka-Mirpur)"
       });
     }
 
-    // Validate role
-    const validRoles = ["public", "police", "admin"];
-    if (!validRoles.includes(role)) {
-      return res.status(400).json({ 
-        message: "Invalid role. Choose from: public, police, admin." 
-      });
-    }
-
-    // Prepare data for model
+    // Create user
     const userData = {
       full_name,
       username,
       email,
       national_id,
-      mobile: mobile_no, // Map to mobile for model
+      mobile_no,
       password,
       address,
-      role
+      passport,
+      role: 'public',
+      status: 'approved'
     };
 
     const newUser = await UserModel.create(userData);
 
-    res.status(201).json({ 
-      message: "User registered successfully.", 
+    // Generate token
+    const token = jwt.sign(
+      { userId: newUser.id, email: newUser.email, role: newUser.role },
+      process.env.JWT_SECRET,
+      { expiresIn: '8h' }
+    );
+
+    res.status(201).json({
+      success: true,
+      message: "Registration successful. Account pending approval.",
       user: {
         id: newUser.id,
         username: newUser.username,
         email: newUser.email,
-        role: newUser.role
-      }
+        role: newUser.role,
+        status: newUser.status
+      },
+      token
     });
+
   } catch (error) {
     console.error("Registration Error:", error);
     const status = error.status || 500;
-    const message = error.message || "Server error during registration.";
-    res.status(status).json({ 
+    const message = error.message || "Registration failed";
+    
+    res.status(status).json({
+      success: false,
       message,
       errors: error.errors,
       details: error.details
@@ -93,10 +103,115 @@ const registerUser = async (req, res) => {
 
 
 
-const loginUser = async (req, res) => {
-  const { email, password, role } = req.body;
 
+
+
+
+
+
+const registerAdmin = async (req, res) => {
   try {
+    const { 
+      full_name, 
+      username, 
+      email, 
+      national_id, 
+      mobile_no,
+      password, 
+      confirmPassword, 
+      address,
+      passport
+    } = req.body;
+
+    // Validate required fields
+    if (!full_name || !username || !email || !national_id || !mobile_no || 
+        !password || !confirmPassword || !address) {
+      return res.status(400).json({ 
+        success: false,
+        message: "All fields are required",
+        missingFields: {
+          full_name: !full_name,
+          username: !username,
+          email: !email,
+          national_id: !national_id,
+          mobile_no: !mobile_no,
+          password: !password,
+          confirmPassword: !confirmPassword,
+          address: !address
+        }
+      });
+    }
+
+    // Validate password match
+    if (password !== confirmPassword) {
+      return res.status(400).json({ 
+        success: false,
+        message: "Passwords do not match" 
+      });
+    }
+
+    // Validate address format
+    if (!/^[a-zA-Z\s]+-[a-zA-Z\s]+$/.test(address)) {
+      return res.status(400).json({
+        success: false,
+        message: "Address must be in format: District-Thana (e.g., Dhaka-Mirpur)"
+      });
+    }
+
+    // Create user
+    const userData = {
+      full_name,
+      username,
+      email,
+      national_id,
+      mobile_no,
+      password,
+      address,
+      passport,
+      role: 'admin',
+      status: 'approved'
+    };
+
+    const newUser = await UserModel.createAdmin(userData);
+
+    // Generate token
+    const token = jwt.sign(
+      { userId: newUser.id, email: newUser.email, role: newUser.role },
+      process.env.JWT_SECRET,
+      { expiresIn: '8h' }
+    );
+
+    res.status(201).json({
+      success: true,
+      message: "Registration successful. Account pending approval.",
+      user: {
+        id: newUser.id,
+        username: newUser.username,
+        email: newUser.email,
+        role: newUser.role,
+        status: newUser.status
+      },
+      token
+    });
+
+  } catch (error) {
+    console.error("Registration Error:", error);
+    const status = error.status || 500;
+    const message = error.message || "Registration failed";
+    
+    res.status(status).json({
+      success: false,
+      message,
+      errors: error.errors,
+      details: error.details
+    });
+  }
+};
+
+const loginUser = async (req, res) => {
+  try {
+    const { email, password, role } = req.body;
+
     // Validate required fields
     if (!email || !password || !role) {
       return res.status(400).json({ 
@@ -105,7 +220,7 @@ const loginUser = async (req, res) => {
       });
     }
 
-    // Find user by email
+    // Find user
     const user = await UserModel.findByEmail(email);
     if (!user) {
       return res.status(401).json({
@@ -114,7 +229,15 @@ const loginUser = async (req, res) => {
       });
     }
 
-    // Verify role matches
+    // Check account status
+    if (user.status !== 'approved') {
+      return res.status(403).json({
+        success: false,
+        message: `Account is ${user.status}. Please contact administrator.`
+      });
+    }
+
+    // Verify role
     if (user.role !== role) {
       return res.status(403).json({
         success: false,
@@ -138,16 +261,15 @@ const loginUser = async (req, res) => {
       { expiresIn: '8h' }
     );
 
-    // Return success response
     res.status(200).json({
       success: true,
       message: "Login successful",
       token,
       user: {
         id: user.id,
+        username: user.username,
         email: user.email,
-        role: user.role,
-        username: user.username
+        role: user.role
       }
     });
 
@@ -155,11 +277,160 @@ const loginUser = async (req, res) => {
     console.error('Login error:', error);
     res.status(500).json({
       success: false,
-      message: "Internal server error"
+      message: "Login failed. Please try again."
+    });
+  }
+};
+
+const registerPolice = async (req, res) => {
+  try {
+    const { 
+      full_name, 
+      username, 
+      email, 
+      national_id, 
+      mobile_no,
+      password, 
+      confirmPassword, 
+      address,
+      passport,
+      police_id,
+      station,
+      rank,
+      badge_number,
+      joining_date
+    } = req.body;
+
+    // Validate required fields
+    const requiredFields = {
+      full_name,
+      username,
+      email,
+      national_id,
+      mobile_no,
+      password,
+      confirmPassword,
+      address,
+      police_id,
+      station,
+      rank,
+      badge_number,
+      joining_date
+    };
+
+    const missingFields = Object.entries(requiredFields)
+      .filter(([_, value]) => !value)
+      .map(([key]) => key);
+
+    if (missingFields.length > 0) {
+      return res.status(400).json({ 
+        success: false,
+        message: 'Missing required fields for police registration',
+        missingFields: missingFields.reduce((acc, field) => {
+          acc[field] = true;
+          return acc;
+        }, {})
+      });
+    }
+
+    // Validate password match
+    if (password !== confirmPassword) {
+      return res.status(400).json({ 
+        success: false,
+        message: "Passwords do not match" 
+      });
+    }
+
+    // Validate address format
+    if (!/^[a-zA-Z\s]+-[a-zA-Z\s]+$/.test(address)) {
+      return res.status(400).json({
+        success: false,
+        message: "Address must be in format: District-Thana (e.g., Dhaka-Mirpur)"
+      });
+    }
+
+    // Validate joining date format
+    if (isNaN(new Date(joining_date).getTime())) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid joining date format"
+      });
+    }
+
+    // Create police data object
+    const policeData = {
+      full_name,
+      username,
+      email,
+      national_id,
+      mobile_no,
+      password,
+      address,
+      passport,
+      police_id,
+      station,
+      rank,
+      badge_number,
+      joining_date
+    };
+
+    // Create police officer
+    const newOfficer = await UserModel.createPolice(policeData);
+
+    // Generate token (optional - might want to skip for pending accounts)
+    const token = jwt.sign(
+      { 
+        userId: newOfficer.id, 
+        email: newOfficer.email, 
+        role: newOfficer.role 
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: '8h' }
+    );
+
+    res.status(201).json({
+      success: true,
+      message: "Police registration submitted for approval",
+      officer: {
+        id: newOfficer.id,
+        username: newOfficer.username,
+        email: newOfficer.email,
+        role: newOfficer.role,
+        status: newOfficer.status,
+        police_id: newOfficer.police_id,
+        badge_number: newOfficer.badge_number
+      },
+      // Include token only if you want immediate access
+      // token: newOfficer.status === 'approved' ? token : undefined
+    });
+
+  } catch (error) {
+    console.error("Police Registration Error:", error);
+    
+    if (error.status === 400 && error.errors) {
+      return res.status(400).json({
+        success: false,
+        message: "Validation errors",
+        errors: error.errors
+      });
+    }
+
+    if (error.status === 409) {
+      return res.status(409).json({
+        success: false,
+        message: error.message || "Duplicate police credentials",
+        details: error.details
+      });
+    }
+
+    res.status(error.status || 500).json({
+      success: false,
+      message: error.message || "Police registration failed",
+      details: process.env.NODE_ENV === 'development' ? error : undefined
     });
   }
 };
 
 
 
-module.exports = { registerUser, loginUser };
+module.exports = { registerUser, loginUser,registerAdmin,registerPolice };

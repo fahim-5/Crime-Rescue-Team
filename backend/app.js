@@ -34,9 +34,12 @@ app.use("/api/verification", verificationRoutes);
 
 
 // Routes
-app.use("/public-admin/", authRoutes);   // Authentication routes
+ // Authentication routes
 app.use("/api/reports", reportRoutes);  // Crime report routes (upload middleware is applied in reportRoutes.js)
-app.use("/police/",requestRoutes)
+app.use("/public/", authRoutes); 
+app.use(authRoutes);  
+
+
 
 
 
