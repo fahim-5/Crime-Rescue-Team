@@ -220,8 +220,10 @@ const loginUser = async (req, res) => {
       });
     }
 
-    // Find user
-    const user = await UserModel.findByEmail(email);
+    // Find user with case-insensitive email search
+    const user = await UserModel.findByEmail(email.toLowerCase().trim());
+    
+    // User not found
     if (!user) {
       return res.status(401).json({
         success: false,
@@ -229,19 +231,24 @@ const loginUser = async (req, res) => {
       });
     }
 
-    // Check account status
+    // Check account status - must be approved
     if (user.status !== 'approved') {
+      const statusMessages = {
+        'pending': 'Your account is pending approval',
+        'rejected': 'Your account has been rejected'
+      };
       return res.status(403).json({
         success: false,
-        message: `Account is ${user.status}. Please contact administrator.`
+        message: statusMessages[user.status] || 'Account not approved',
+        status: user.status
       });
     }
 
-    // Verify role
-    if (user.role !== role) {
+    // Verify role matches exactly
+    if (user.role !== role.toLowerCase()) {
       return res.status(403).json({
         success: false,
-        message: "Access denied for this role"
+        message: `Access denied for ${role} role`
       });
     }
 
@@ -254,30 +261,44 @@ const loginUser = async (req, res) => {
       });
     }
 
-    // Generate token
+    // Generate token with role and status
     const token = jwt.sign(
-      { userId: user.id, email: user.email, role: user.role },
+      { 
+        userId: user.id, 
+        email: user.email, 
+        role: user.role,
+        status: user.status
+      },
       process.env.JWT_SECRET,
       { expiresIn: '8h' }
     );
+
+    // Prepare user data to return (excluding sensitive info)
+    const userData = {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      role: user.role,
+      status: user.status,
+      ...(user.role === 'police' && {
+        police_id: user.police_id,
+        badge_number: user.badge_number
+      })
+    };
 
     res.status(200).json({
       success: true,
       message: "Login successful",
       token,
-      user: {
-        id: user.id,
-        username: user.username,
-        email: user.email,
-        role: user.role
-      }
+      user: userData
     });
 
   } catch (error) {
     console.error('Login error:', error);
     res.status(500).json({
       success: false,
-      message: "Login failed. Please try again."
+      message: "Login failed. Please try again.",
+      ...(process.env.NODE_ENV === 'development' && { error: error.message })
     });
   }
 };
