@@ -1,79 +1,10 @@
-const bcrypt = require("bcryptjs");
 const RequestModel = require("../models/requestModel");
 
 const requestController = {
-  registerUser: async (req, res) => {
-    try {
-      const {
-        full_name,
-        username,
-        email,
-        national_id,
-        passport,
-        mobile,
-        password,
-        confirmPassword,
-        address,
-        police_id,
-        badge_number,
-        rank,
-        station,
-        joining_date,
-      } = req.body;
-
-      if (
-        !full_name || !username || !email || !national_id || !mobile || !password ||
-        !confirmPassword || !address || !police_id || !badge_number || !rank || !station || !joining_date
-      ) {
-        return res.status(400).json({ message: "All fields are required." });
-      }
-
-      if (password !== confirmPassword) {
-        return res.status(400).json({ message: "Passwords do not match." });
-      }
-
-      // Validate Address Format (District-Thana)
-      const addressPattern = /^[a-zA-Z\s]+-[a-zA-Z\s]+$/;
-      if (!addressPattern.test(address)) {
-        return res.status(400).json({
-          message: "Enter a valid address in the format: District-Thana (e.g., Dhaka-Mirpur).",
-        });
-      }
-
-      // Hash password
-      const salt = await bcrypt.genSalt(10);
-      const password_hash = await bcrypt.hash(password, salt);
-
-      // Save police request in the database
-      const policeData = {
-        full_name, username, email, national_id, passport, mobile, password_hash,
-        address, police_id, badge_number, rank, station, joining_date
-      };
-
-      await RequestModel.createPoliceRequest(policeData);
-
-      res.status(201).json({ message: "Police signup request submitted successfully." });
-
-    } catch (error) {
-      console.error("Signup Error:", error);
-      res.status(500).json({ message: "Server error during signup." });
-    }
-  },
-
   getAllPoliceRequests: async (req, res) => {
     try {
-      const { status, page = 1, limit = 10 } = req.query;
-      
-      const requests = status 
-        ? await RequestModel.getPoliceRequestsByStatus(status)
-        : await RequestModel.getAllPoliceRequests();
-
-      const startIndex = (page - 1) * limit;
-      const endIndex = page * limit;
-      const paginatedRequests = requests.slice(startIndex, endIndex);
-
-      res.status(200).json(paginatedRequests);
-
+      const requests = await RequestModel.getAllPoliceRequests();
+      res.status(200).json(requests);
     } catch (error) {
       console.error('Error in getAllPoliceRequests:', error);
       res.status(500).json({
@@ -113,6 +44,60 @@ const requestController = {
       res.status(500).json({
         success: false,
         message: "Failed to fetch police request",
+        error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  },
+
+  approvePoliceRequest: async (req, res) => {
+    try {
+      const { policeId } = req.params;
+      
+      if (!policeId) {
+        return res.status(400).json({
+          success: false,
+          message: "Missing police ID parameter"
+        });
+      }
+
+      await RequestModel.approvePoliceRequest(policeId);
+      
+      res.status(200).json({
+        success: true,
+        message: "Police request approved successfully"
+      });
+    } catch (error) {
+      console.error("Error approving police request:", error);
+      res.status(500).json({
+        success: false,
+        message: "Failed to approve police request",
+        error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  },
+
+  rejectPoliceRequest: async (req, res) => {
+    try {
+      const { policeId } = req.params;
+      
+      if (!policeId) {
+        return res.status(400).json({
+          success: false,
+          message: "Missing police ID parameter"
+        });
+      }
+
+      await RequestModel.rejectPoliceRequest(policeId);
+      
+      res.status(200).json({
+        success: true,
+        message: "Police request rejected and removed successfully"
+      });
+    } catch (error) {
+      console.error("Error rejecting police request:", error);
+      res.status(500).json({
+        success: false,
+        message: "Failed to reject police request",
         error: process.env.NODE_ENV === 'development' ? error.message : undefined
       });
     }

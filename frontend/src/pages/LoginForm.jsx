@@ -53,7 +53,7 @@ const LoginForm = () => {
               navigate('/admin/dashboard');
               break;
             case 'police':
-              navigate('/police-dashboard');
+              navigate('/police/dashboard');
               break;
             default:
               navigate('/home');

@@ -29,10 +29,6 @@ app.use("/uploads", express.static("uploads"));  // Static file serving for uplo
 app.use("/api/verification", verificationRoutes);
 
 
-
-
-
-
 // Routes
  // Authentication routes
 app.use("/api/reports", reportRoutes);  // Crime report routes (upload middleware is applied in reportRoutes.js)
@@ -40,6 +36,7 @@ app.use("/public/", authRoutes);
 app.use(authRoutes);  
 
 
+app.use("/police",requestRoutes);
 
 
 

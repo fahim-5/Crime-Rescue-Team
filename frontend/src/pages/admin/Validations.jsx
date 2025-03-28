@@ -7,8 +7,8 @@ const Validations = () => {
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
-  
   useEffect(() => {
     const fetchRequests = async () => {
       try {
@@ -26,35 +26,43 @@ const Validations = () => {
     fetchRequests();
   }, []);
 
-  const handleApprove = () => {
-       
-
+  const handleApprove = async (policeId) => {
+    try {
+      await axios.put(`http://localhost:5000/police/requests/approve/${policeId}`);
+      setSuccess("Request approved successfully");
+      setRequests(requests.filter(request => request.police_id !== policeId));
+      setSelectedRequest(null);
+      setTimeout(() => setSuccess(""), 3000);
+    } catch (err) {
+      setError("Failed to approve request");
+      console.error(err);
+    }
   };
 
-
-  
-  const handleReject = (id) => {
-         
-
+  const handleReject = async (policeId) => {
+    try {
+      await axios.delete(`http://localhost:5000/police/requests/reject/${policeId}`);
+      setSuccess("Request rejected successfully");
+      setRequests(requests.filter(request => request.police_id !== policeId));
+      setSelectedRequest(null);
+      setTimeout(() => setSuccess(""), 3000);
+    } catch (err) {
+      setError("Failed to reject request");
+      console.error(err);
+    }
   };
-
-
 
   const viewDetails = (request) => {
     setSelectedRequest(request);
   };
 
-
-
   if (loading) return <div className="loading">Loading requests...</div>;
   if (error) return <div className="error">{error}</div>;
 
-
-
-  
   return (
     <div className="validation-container">
       <h1>Police Registration Requests</h1>
+      {success && <div className="success-message">{success}</div>}
 
       <div className="requests-table">
         <table>
@@ -64,16 +72,18 @@ const Validations = () => {
               <th>Police ID</th>
               <th>Station</th>
               <th>Rank</th>
+              <th>Status</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {requests.map((request) => (
-              <tr key={request._id}>
+              <tr key={request.id}>
                 <td>{request.full_name}</td>
                 <td>{request.police_id}</td>
                 <td>{request.station}</td>
                 <td>{request.rank}</td>
+                <td>{request.status}</td>
                 <td className="actions">
                   <button
                     className="view-btn"
@@ -110,6 +120,9 @@ const Validations = () => {
                 <p>
                   <strong>Badge Number:</strong> {selectedRequest.badge_number}
                 </p>
+                <p>
+                  <strong>National ID:</strong> {selectedRequest.national_id}
+                </p>
               </div>
               <div className="detail-group">
                 <h3>Assignment</h3>
@@ -132,18 +145,21 @@ const Validations = () => {
                 <p>
                   <strong>Mobile:</strong> {selectedRequest.mobile}
                 </p>
+                <p>
+                  <strong>Address:</strong> {selectedRequest.address}
+                </p>
               </div>
             </div>
             <div className="modal-actions">
-
-
-              <button className="approve-btn" onClick={() => handleApprove()}>
+              <button 
+                className="approve-btn" 
+                onClick={() => handleApprove(selectedRequest.police_id)}
+              >
                 Approve
               </button>
-
               <button
                 className="reject-btn"
-                onClick={() => handleReject(selectedRequest._id)}
+                onClick={() => handleReject(selectedRequest.police_id)}
               >
                 Reject
               </button>

@@ -1,59 +1,25 @@
 const { pool } = require("../config/db");
 
 const RequestModel = {
-  createPoliceRequest: async (policeData) => {
-    const query = `
-      INSERT INTO requests (
-        full_name, username, email, national_id, passport, mobile, password_hash, 
-        role, address, police_id, badge_number, rank, station, joining_date, status
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `;
-
-    const values = [
-      policeData.full_name,
-      policeData.username,
-      policeData.email,
-      policeData.national_id,
-      policeData.passport || null,
-      policeData.mobile,
-      policeData.password_hash, // Already hashed
-      "police",
-      policeData.address,
-      policeData.police_id,
-      policeData.badge_number,
-      policeData.rank,
-      policeData.station,
-      policeData.joining_date,
-      "pending", // Default status
-    ];
-
-    try {
-      const [result] = await pool.execute(query, values);
-      return result;
-    } catch (err) {
-      console.error("Database Error:", err.sqlMessage || err);
-      throw err;
-    }
-  },
-
   getAllPoliceRequests: async () => {
     const query = `
-  SELECT 
-    id as _id,
-    full_name,
-    email,
-    mobile,
-    police_id,
-    badge_number,
-    rank,
-    station,
-    joining_date,
-    status,
-    created_at
-  FROM requests
-  WHERE role = 'police'
-  ORDER BY created_at DESC
-`;
+      SELECT 
+        id,
+        full_name,
+        email,
+        mobile_no as mobile,
+        police_id,
+        badge_number,
+        rank,
+        station,
+        joining_date,
+        status,
+        created_at
+      FROM users
+      WHERE role = 'police' AND status = 'pending'
+      ORDER BY created_at DESC
+    `;
+    
     try {
       const [requests] = await pool.execute(query);
       return requests;
@@ -63,31 +29,24 @@ const RequestModel = {
     }
   },
 
-  getPoliceRequestsByStatus: async (status) => {
-    const query = `
-      SELECT 
-        id, full_name, police_id, rank, station, status
-      FROM requests
-      WHERE role = 'police' AND status = ?
-      ORDER BY created_at DESC
-    `;
-
-    try {
-      const [requests] = await pool.execute(query, [status]);
-      return requests;
-    } catch (err) {
-      console.error("Database Error:", err.sqlMessage || err);
-      throw err;
-    }
-  },
-
-
-
   getPoliceRequestByPoliceId: async (policeId) => {
     const connection = await pool.getConnection();
     try {
       const query = `
-        SELECT * FROM requests 
+        SELECT 
+          id,
+          full_name,
+          email,
+          mobile_no as mobile,
+          police_id,
+          badge_number,
+          rank,
+          station,
+          joining_date,
+          status,
+          national_id,
+          address
+        FROM users 
         WHERE police_id = ? AND role = 'police'
         LIMIT 1
       `;
@@ -102,7 +61,55 @@ const RequestModel = {
     }
   },
 
-};
+  approvePoliceRequest: async (policeId) => {
+    const connection = await pool.getConnection();
+    try {
+      await connection.beginTransaction();
 
+      // Update status in users table
+      await connection.execute(
+        `UPDATE users SET status = 'approved' WHERE police_id = ? AND role = 'police'`,
+        [policeId]
+      );
+
+      await connection.commit();
+      return true;
+    } catch (err) {
+      await connection.rollback();
+      console.error("Database Error:", err.sqlMessage || err);
+      throw err;
+    } finally {
+      if (connection) await connection.release();
+    }
+  },
+
+  rejectPoliceRequest: async (policeId) => {
+    const connection = await pool.getConnection();
+    try {
+      await connection.beginTransaction();
+
+      // Delete from users table
+      await connection.execute(
+        `DELETE FROM users WHERE police_id = ? AND role = 'police'`,
+        [policeId]
+      );
+
+      // Delete from police table if exists
+      await connection.execute(
+        `DELETE FROM police WHERE police_id = ?`,
+        [policeId]
+      );
+
+      await connection.commit();
+      return true;
+    } catch (err) {
+      await connection.rollback();
+      console.error("Database Error:", err.sqlMessage || err);
+      throw err;
+    } finally {
+      if (connection) await connection.release();
+    }
+  }
+};
 
 module.exports = RequestModel;
