@@ -47,6 +47,7 @@
 
 .crimes-table {
   width: 100%;
+  /* min-height: 100vh; */
   border-collapse: collapse;
   background-color: white;
   border-radius: 6px;
