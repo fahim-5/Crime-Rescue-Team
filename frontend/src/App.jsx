@@ -3,8 +3,6 @@ import { AuthProvider } from "./context/AuthContext";
 import { useAuth } from "./context/useAuth";
 import Home from "./pages/Home";
 import NavbarPublic from "./components/Navbar";
-import NavbarPolice from "./components/NavbarPolice";
-import NavbarAdmin from "./components/NavbarAdmin";
 import Footer from "./components/Footer";
 import SignupForm from "./pages/PublicSignup";
 import LoginForm from "./pages/LoginForm";
@@ -30,21 +28,27 @@ import PoliceSettings from "./pages/police/PoliceSettings";
 import ResolvedCases from "./pages/police/ResolvedCases";
 import PendingCases from "./pages/police/PendingCases";
 import UserReports from "./pages/UserReports";
+import Navbar from "./components/Navbar";
+import Instructions from "./components/Instructions";
 
 function App() {
   return (
     <AuthProvider>
       <Router>
-        <RoleBasedNavbar />
+        <Navbar/>
         <Routes>
           {/* starting routes  */}
           <Route path="/start" element={<Start />} />
+          <Route path="/instructions" element={<Instructions />} />
+          
            
 
            {/* signup routes  */}
           <Route path="/police-signup" element={<PoliceSignup />} />
           <Route path="/admin-signup" element={<AdminSignup />} />
           <Route path="/public-signup" element={<PublicSignup />} />
+
+        
            
           {/* login routes  */}
           <Route path="/" element={<LoginForm />} />
@@ -57,6 +61,8 @@ function App() {
           <Route path="/alert" element={<CrimeAlerts />} />
           <Route path="/about" element={<About />} />
           <Route path="/reports" element={<UserReports />} />
+          <Route path="/public/settings" element={<PoliceSettings />} />
+
 
 
 
@@ -123,15 +129,15 @@ function App() {
   );
 }
 
-const RoleBasedNavbar = () => {
-  const { user } = useAuth();
-  return user?.role === "police" ? (
-    <NavbarPolice />
-  ) : user?.role === "admin" ? (
-    <NavbarAdmin />
-  ) : (
-    <NavbarPublic />
-  );
-};
+// const RoleBasedNavbar = () => {
+//   const { user } = useAuth();
+//   return user?.role === "police" ? (
+//     <NavbarPolice />
+//   ) : user?.role === "admin" ? (
+//     <NavbarAdmin />
+//   ) : (
+//     <NavbarPublic />
+//   );
+// };
 
 export default App;

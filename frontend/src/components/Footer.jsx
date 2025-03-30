@@ -1,67 +1,142 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { useAuth } from "../context/useAuth";
+import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaYoutube } from "react-icons/fa";
 import "./Footer.css";
-// Import Font Awesome icons
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFacebook, faTwitter, faInstagram, faLinkedin } from "@fortawesome/free-brands-svg-icons";
 
 const Footer = () => {
-    return (
-        <footer>
-            <div className="footer-content">
-                {/* About Section */}
-                <div className="footer-section about">
-                    <h2>About Us</h2>
-                    <p>
-                        Live Crime Reporting is dedicated to providing a platform for citizens 
-                        to report crimes in real-time, contributing to safer communities.
-                    </p>
-                </div>
+  const { user } = useAuth();
 
-                {/* Quick Links Section */}
-                <div className="footer-section links">
-                    <h2>Quick Links</h2>
-                    <ul>
-                        <li><a href="/home">Home</a></li>
-                        <li><a href="/report">Report a Crime</a></li>
-                        <li><a href="/notifications">Notifications</a></li>
-                        <li><a href="/alert">Alert</a></li>
-                        <li><a href="/about">About Us</a></li>
-                    </ul>
-                </div>
+  // Role-based quick links (same as before)
+  const getQuickLinks = () => {
+    if (user?.role === "admin") {
+      return (
+        <>
+          <li>
+            <Link to="/admin/dashboard">Dashboard</Link>
+          </li>
+          <li>
+            <Link to="/admin/reports">Reports</Link>
+          </li>
+          <li>
+            <Link to="/admin/validations">Validations</Link>
+          </li>
+          <li>
+            <Link to="/admin/analytics">Analytics</Link>
+          </li>
+          <li>
+            <Link to="/admin/settings">Console</Link>
+          </li>
+        </>
+      );
+    } else if (user?.role === "police") {
+      return (
+        <>
+          <li>
+            <Link to="/police/dashboard">Dashboard</Link>
+          </li>
+          <li>
+            <Link to="/police/reports">All Reports</Link>
+          </li>
+          <li>
+            <Link to="/police/pending">Pending Cases</Link>
+          </li>
+          <li>
+            <Link to="/police/resolved">Resolved Cases</Link>
+          </li>
+          <li>
+            <Link to="/police/analytics">Analytics</Link>
+          </li>
+        </>
+      );
+    } else {
+      // Public user or not logged in
+      return (
+        <>
+          {!user && (
+            <>
+              <li>
+                <Link to="/instructions">Instruction</Link>
+              </li>
+              <li>
+                <Link to="/about">About</Link>
+              </li>
+              <li>
+                <Link to="/">Sign In</Link>
+              </li>
+              <li>
+                <Link to="/start">Sign Up</Link>
+              </li>
+            </>
+          )}
 
-                {/* Contact Section */}
-                <div className="footer-section contact">
-                    <h2>Contact Us</h2>
-                    <p>Email: mfaysal223224@bscse.uiu.ac.bd</p>
-                    <p>Phone: +880 1774071130</p>
-                </div>
+          {user && (
+            <>
+              <li>
+                <Link to="/home">Home</Link>
+              </li>
+              <li>
+                <Link to="/report">Report</Link>
+              </li>
+              <li>
+                <Link to="/notifications">Notifications</Link>
+              </li>
+              <li>
+                <Link to="/alert">Alert</Link>
+              </li>
+              <li>
+                <Link to="/public/settings">Account</Link>
+              </li>
+            </>
+          )}
+        </>
+      );
+    }
+  };
 
-                {/* Social Media Section */}
-                <div className="footer-section social">
-                    <h2>Follow Us</h2>
-                    <div className="social-icons">
-                        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="social-icon">
-                            <FontAwesomeIcon icon={faFacebook} />
-                        </a>
-                        <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="social-icon">
-                            <FontAwesomeIcon icon={faTwitter} />
-                        </a>
-                        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="social-icon">
-                            <FontAwesomeIcon icon={faInstagram} />
-                        </a>
-                        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="social-icon">
-                            <FontAwesomeIcon icon={faLinkedin} />
-                        </a>
-                    </div>
-                </div>
-            </div>
+  return (
+    <footer className="footer">
+      <div className="footer-container">
+        <div className="footer-brand">
+          <h3 className="logo">Stop Crime.</h3>
+          <p className="tagline">
+            A platform to report crimes, get help from authorities, and contribute
+            to safer communities.
+          </p>
+          
+        </div>
 
-            {/* Footer Bottom */}
-            <div className="footer-bottom">
-                <p>&copy; 2025 Live Crime Reporting. All rights reserved.</p>
-            </div>
-        </footer>
-    );
+        <div className="footer-links">
+          <h4>Quick Links</h4>
+          <ul className="quick-links">{getQuickLinks()}</ul>
+        </div>
+
+        <div className="footer-contact">
+          <h4>Contact</h4>
+          <ul className="contact-info">
+            <li>Email: fahimfaysal@gmail.com</li>
+            <li>Phone: +088 1774071130</li>
+            <li>Emergency: 2229955</li>
+          </ul>
+        </div>
+
+
+        <div className="social-icons">
+            <a href="https://facebook.com" aria-label="Facebook"><FaFacebook /></a>
+            <a href="https://twitter.com" aria-label="Twitter"><FaTwitter /></a>
+            <a href="https://instagram.com" aria-label="Instagram"><FaInstagram /></a>
+            <a href="https://linkedin.com" aria-label="LinkedIn"><FaLinkedin /></a>
+            <a href="https://youtube.com" aria-label="YouTube"><FaYoutube /></a>
+          </div>
+
+      </div>
+
+      
+      <div className="footer-bottom">
+        <p>&copy; {new Date().getFullYear()} Stop Crime. All rights reserved.</p>
+      </div>
+    </footer>
+  );
 };
 
 export default Footer;

@@ -9,6 +9,7 @@
   position: fixed;
   top: 0;
   left: 0;
+  height: 90px;
   width: 100%;
   box-sizing: border-box;
   z-index: 1000;
@@ -146,5 +147,36 @@ body {
   text-decoration: none;
 }
 
+.auth-buttons-container {
+  display: flex;
+  gap: 12px;
+}
 
+.auth-btn {
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.auth-btn {
+  color: #ffffff;
+  background: #a72c40;
+  font-weight: 600;
+}
+
+
+.auth-btn:hover {
+  background: #a72c40;
+}
+
+.sign-up-btn {
+  background: #a72c40;
+  color: white;
+  border: 1px solid #970f1d;
+}
+
+.sign-up-btn:hover {
+  background: #a72c40;
+}
 
