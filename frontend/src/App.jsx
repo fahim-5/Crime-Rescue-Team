@@ -1,33 +1,33 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import { useAuth } from "./context/useAuth";
-import Home from "./pages/Home";
+import Home from "./pages/public/Home";
 import NavbarPublic from "./components/Navbar";
 import Footer from "./components/Footer";
-import SignupForm from "./pages/PublicSignup";
-import LoginForm from "./pages/LoginForm";
-import CrimeReportForm from "./pages/CrimeReportForm";
-import Notifications from "./pages/Notifications";
-import CrimeAlerts from "./pages/CrimeAlerts";
-import About from "./pages/About";
+import SignupForm from "./pages/general/PublicSignup";
+import LoginForm from "./pages/general/LoginForm";
+import CrimeReportForm from "./pages/public/CrimeReportForm";
+import Notifications from "./pages/public/Notifications";
+import CrimeAlerts from "./pages/public/CrimeAlerts";
+import About from "./components/About";
 import PrivateRoute from "./components/PrivateRoute";
 
 import Validations from "./pages/admin/Validations";
-import Start from "./pages/Start";
-import PoliceSignup from "./pages/PoliceSignup";
-import PublicSignup from "./pages/PublicSignup";
+import Start from "./pages/general/Start";
+import PoliceSignup from "./pages/general/PoliceSignup";
+import PublicSignup from "./pages/general/PublicSignup";
 
 import AdminDashboard from "./pages/admin/AdminDeshboard";
 import ReportedCrimes from "./pages/admin/ReportedCrimes";
-import Analytics from "./pages/admin/Analytics";
-import Settings from "./pages/admin/Settings";
-import AdminSignup from "./pages/AdminSignup";
+import Analytics from "./components/Analytics";
+import Settings from "./components/Settings";
+import AdminSignup from "./pages/general/AdminSignup";
 import PoliceDashboard from "./pages/police/PoliceDashboard";
 import PoliceReports from "./pages/police/PoliceReports";
 import PoliceSettings from "./pages/police/PoliceSettings";
 import ResolvedCases from "./pages/police/ResolvedCases";
 import PendingCases from "./pages/police/PendingCases";
-import UserReports from "./pages/UserReports";
+import UserReports from "./components/UserReports";
 import Navbar from "./components/Navbar";
 import Instructions from "./components/Instructions";
 
@@ -35,26 +35,21 @@ function App() {
   return (
     <AuthProvider>
       <Router>
-        <Navbar/>
+        <Navbar />
         <Routes>
           {/* starting routes  */}
           <Route path="/start" element={<Start />} />
           <Route path="/instructions" element={<Instructions />} />
-          
-           
 
-           {/* signup routes  */}
+          {/* signup routes  */}
           <Route path="/police-signup" element={<PoliceSignup />} />
           <Route path="/admin-signup" element={<AdminSignup />} />
           <Route path="/public-signup" element={<PublicSignup />} />
 
-        
-           
           {/* login routes  */}
           <Route path="/" element={<LoginForm />} />
-           
 
-           {/* public routes  */}
+          {/* public routes  */}
           <Route path="/home" element={<Home />} />
           <Route path="/report" element={<CrimeReportForm />} />
           <Route path="/notifications" element={<Notifications />} />
@@ -63,12 +58,7 @@ function App() {
           <Route path="/reports" element={<UserReports />} />
           <Route path="/public/settings" element={<PoliceSettings />} />
 
-
-
-
-
-           
-           {/* police routes  */}
+          {/* police routes  */}
           <Route path="/police/dashboard" element={<PoliceDashboard />} />
           <Route path="/police/reports" element={<PoliceReports />} />
           <Route path="/police/analytics" element={<Analytics />} />
@@ -76,10 +66,6 @@ function App() {
           <Route path="/police/pending" element={<PendingCases />} />
           <Route path="/police/resolved" element={<ResolvedCases />} />
 
-
-
-
-      
           {/* admin routes  */}
           <Route
             path="/admin/validations"

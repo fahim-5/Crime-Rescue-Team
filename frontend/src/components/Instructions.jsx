@@ -153,8 +153,8 @@ const Instructions = () => {
         <div className={styles.helpCard}>
           <p>
             Our support team is available 24/7 to assist you with any questions or issues.
-            Contact us at <a href="mailto:support@stopcrime.com" className={styles.contactLink}>support@stopcrime.com</a> or 
-            call our helpline at <span className={styles.contactLink}>1-800-555-HELP</span>.
+            Contact us at <a href="crime_rescue_bd@stopcrime.com" className={styles.contactLink}>crime_rescue_bd@stopcrime.com</a> or 
+            call our helpline at <span className={styles.contactLink}>111-222-555</span>.
           </p>
           <button className={styles.contactButton}>Live Chat Support</button>
         </div>

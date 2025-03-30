@@ -7,12 +7,12 @@ const PrivateRoute = ({ children, allowedRole }) => {
 
   // If no user is logged in, redirect to login page
   if (!user) {
-    return <Navigate to="/login" />;
+    return <Navigate to="/" />;
   }
 
   // If the user doesn't have the required role, redirect to home page or another default route
   if (user.role !== allowedRole) {
-    return <Navigate to="/home" />;
+    return <Navigate to="/" />;
   }
 
   return children; // If everything is fine, render the protected component
