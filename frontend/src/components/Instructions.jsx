@@ -14,40 +14,29 @@ const Instructions = () => {
         <div className={styles.instructionCard}>
           <h3 className={styles.cardTitle}>Platform Overview</h3>
           <p className={styles.cardIntro}>
-            Our platform provides different access levels for public users, police officers, and administrators. 
-            Each role has specific capabilities to help combat crime effectively.
+            Our platform provides three distinct access levels tailored to different user needs:
+          </p>
+          <ul className={styles.instructionList}>
+            <li className={styles.listItem}>
+              <span className={styles.checkIcon}>✓</span>
+              <strong>Public:</strong>Community members can report crimes, view safety alerts, and access prevention resources. This level focuses on community engagement and rapid incident reporting.
+            </li>
+            <li className={styles.listItem}>
+              <span className={styles.checkIcon}>✓</span>
+              <strong>Police:</strong>Verified law enforcement personnel gain access to real-time reports, case management tools, and analytical dashboards to coordinate responses effectively.
+            </li>
+            <li className={styles.listItem}>
+              <span className={styles.checkIcon}>✓</span>
+              <strong>Admin:</strong> System administrators oversee user verification, platform configuration, and have access to comprehensive analytics for strategic decision-making.
+            </li>
+          </ul>
+          <p className={styles.cardIntro}>
+            Each role is carefully designed with specific capabilities and security measures to ensure appropriate access while maintaining data integrity. Our tiered approach enables efficient collaboration between community members and law enforcement to combat crime effectively.
           </p>
         </div>
       </section>
 
-      <section className={styles.section}>
-        <h2 className={styles.sectionTitle}>Login Instructions</h2>
-        <div className={styles.instructionCard}>
-          <h3 className={styles.cardTitle}>General Login Process</h3>
-          <ul className={styles.instructionList}>
-            <li className={styles.listItem}>
-              <span className={styles.checkIcon}>✓</span>
-              <strong>Email:</strong> Enter your registered email address
-            </li>
-            <li className={styles.listItem}>
-              <span className={styles.checkIcon}>✓</span>
-              <strong>Password:</strong> Provide your secure password
-            </li>
-            <li className={styles.listItem}>
-              <span className={styles.checkIcon}>✓</span>
-              <strong>Role Selection:</strong> Choose your appropriate role from the dropdown
-            </li>
-            <li className={styles.listItem}>
-              <span className={styles.checkIcon}>✓</span>
-              <strong>Access:</strong> Click "Login" to enter your personalized dashboard
-            </li>
-          </ul>
-          <div className={styles.note}>
-            <strong>Note:</strong> If you've forgotten your password, use the "Forgot Password" link on the login page.
-          </div>
-        </div>
-      </section>
-
+      {/* Rest of the component remains exactly the same */}
       <section className={styles.section}>
         <h2 className={styles.sectionTitle}>Account Creation</h2>
         <div className={styles.instructionGrid}>
@@ -144,6 +133,34 @@ const Instructions = () => {
             <div className={styles.featureHighlight}>
               <strong>Key Features:</strong> User management, system configuration, advanced analytics
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className={styles.section}>
+        <h2 className={styles.sectionTitle}>Login Instructions</h2>
+        <div className={styles.instructionCard}>
+          <h3 className={styles.cardTitle}>General Login Process</h3>
+          <ul className={styles.instructionList}>
+            <li className={styles.listItem}>
+              <span className={styles.checkIcon}>✓</span>
+              <strong>Email:</strong> Enter your registered email address
+            </li>
+            <li className={styles.listItem}>
+              <span className={styles.checkIcon}>✓</span>
+              <strong>Password:</strong> Provide your secure password
+            </li>
+            <li className={styles.listItem}>
+              <span className={styles.checkIcon}>✓</span>
+              <strong>Role Selection:</strong> Choose your appropriate role from the dropdown
+            </li>
+            <li className={styles.listItem}>
+              <span className={styles.checkIcon}>✓</span>
+              <strong>Access:</strong> Click "Login" to enter your personalized dashboard
+            </li>
+          </ul>
+          <div className={styles.note}>
+            <strong>Note:</strong> If you've forgotten your password, use the "Forgot Password" link on the login page.
           </div>
         </div>
       </section>

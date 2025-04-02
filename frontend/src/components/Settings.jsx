@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
+import { FiUser, FiShield, FiAlertTriangle, FiEdit2, FiX, FiCheck, FiLock, FiMail, FiPhone, FiMapPin, FiCreditCard } from 'react-icons/fi';
 import styles from './Settings.module.css';
 
 const Settings = () => {
-  // Sample user data - in a real app, this would come from your backend/context
   const [userData, setUserData] = useState({
     id: 'USR-2023-001',
     username: 'crimefighter123',
@@ -30,7 +30,6 @@ const Settings = () => {
   const handleSaveChanges = () => {
     setUserData(tempUserData);
     setEditMode(false);
-    // Here you would typically make an API call to update the user data
   };
 
   const handleCancelEdit = () => {
@@ -39,203 +38,236 @@ const Settings = () => {
   };
 
   const handleDeleteAccount = () => {
-    if (window.confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
-      // API call to delete account would go here
+    if (window.confirm('Are you sure you want to permanently delete your account? All data will be irreversibly removed.')) {
       alert('Account deletion request received');
     }
   };
 
   return (
-    <div className={styles.settingsContainer}>
-      <h1 className={styles.settingsHeader}>Account Settings</h1>
-      
-      <div className={styles.settingsSection}>
-        <h2 className={styles.sectionTitle}>Profile Overview</h2>
+    <div className={styles.fullScreenContainer}>
+      <div className={styles.contentWrapper}>
+        <header className={styles.header}>
+          <h1 className={styles.title}>Account Settings</h1>
+          <p className={styles.subtitle}>Manage your profile and security preferences</p>
+        </header>
         
-        <div className={styles.profileCard}>
-          <div className={styles.profileAvatar}>
-            <span className={styles.avatarInitial}>{userData.fullName.charAt(0)}</span>
-          </div>
-          
-          <div className={styles.profileInfo}>
-            <h3>{userData.fullName}</h3>
-            <p>Username: {userData.username}</p>
-            <p>Member since: {userData.joinDate}</p>
-            <p>Last active: {userData.lastLogin}</p>
+        <div className={styles.mainGrid}>
+          {/* Left Column - Profile Overview */}
+          <section className={`${styles.section} ${styles.profileSection}`}>
+            <div className={styles.sectionHeader}>
+              <FiUser className={styles.sectionIcon} />
+              <h2 className={styles.sectionTitle}>Profile Overview</h2>
+            </div>
             
-            <button 
-              className={styles.button}
-              onClick={() => setShowProfileModal(true)}
-            >
-              View Full Profile
-            </button>
-          </div>
-        </div>
-      </div>
+            <div className={styles.profileCard}>
+              <div className={styles.avatar}>
+                {userData.fullName.charAt(0)}
+              </div>
+              
+              <div className={styles.profileInfo}>
+                <h3>{userData.fullName}</h3>
+                <p className={styles.profileMeta}>@{userData.username}</p>
+                <p className={styles.profileMeta}>Member since {userData.joinDate}</p>
+                <p className={styles.profileMeta}>Last active {userData.lastLogin}</p>
+                
+                <button 
+                  className={`${styles.button} ${styles.primaryButton}`}
+                  onClick={() => setShowProfileModal(true)}
+                >
+                  <FiEdit2 /> Edit Profile
+                </button>
+              </div>
+            </div>
+          </section>
 
-      <div className={styles.settingsSection}>
-        <h2 className={styles.sectionTitle}>Account Security</h2>
-        
-        <div className={styles.securityCard}>
-          <div className={styles.securityItem}>
-            <h3>Password</h3>
-            <p>Last changed 3 months ago</p>
-            <button className={styles.button}>Change Password</button>
-          </div>
-          
-          <div className={styles.securityItem}>
-            <h3>Two-Factor Authentication</h3>
-            <p>Currently disabled</p>
-            <button className={styles.button}>Enable 2FA</button>
-          </div>
-        </div>
-      </div>
+          {/* Right Column - Security and Danger Zone */}
+          <div className={styles.rightColumn}>
+            <section className={`${styles.section} ${styles.securitySection}`}>
+              <div className={styles.sectionHeader}>
+                <FiShield className={styles.sectionIcon} />
+                <h2 className={styles.sectionTitle}>Account Security</h2>
+              </div>
+              
+              <div className={styles.securityGrid}>
+                <div className={styles.securityItem}>
+                  <div className={styles.securityIcon}>
+                    <FiLock />
+                  </div>
+                  <div>
+                    <h3>Password</h3>
+                    <p className={styles.securityStatus}>Last changed 3 months ago</p>
+                  </div>
+                  <button className={`${styles.button} ${styles.primaryButton} ${styles.smallButton}`}>
+                    Change
+                  </button>
+                </div>
+                
+                <div className={styles.securityItem}>
+                  <div className={styles.securityIcon}>
+                    <FiShield />
+                  </div>
+                  <div>
+                    <h3>Two-Factor Authentication</h3>
+                    <p className={styles.securityStatus}>Currently disabled</p>
+                  </div>
+                  <button className={`${styles.button} ${styles.primaryButton} ${styles.smallButton}`}>
+                    Enable
+                  </button>
+                </div>
+              </div>
+            </section>
 
-      <div className={styles.settingsSection}>
-        <h2 className={styles.sectionTitle}>Danger Zone</h2>
-        <button 
-          className={`${styles.button} ${styles.dangerButton}`}
-          onClick={handleDeleteAccount}
-        >
-          Delete Account
-        </button>
-      </div>
-
-      {/* Profile Modal */}
-      {showProfileModal && (
-        <div className={styles.modalOverlay}>
-          <div className={styles.modalContent}>
-            <div className={styles.modalHeader}>
-              <h2>User Profile</h2>
+            <section className={`${styles.section} ${styles.dangerZone}`}>
+              <div className={styles.sectionHeader}>
+                <FiAlertTriangle className={styles.sectionIcon} />
+                <h2 className={styles.sectionTitle}>Danger Zone</h2>
+              </div>
+              <p className={styles.warningText}>Permanent actions that cannot be undone</p>
               <button 
-                className={styles.closeButton}
-                onClick={() => {
-                  setShowProfileModal(false);
-                  setEditMode(false);
-                }}
+                className={`${styles.button} ${styles.dangerButton}`}
+                onClick={handleDeleteAccount}
               >
-                &times;
+                <FiAlertTriangle /> Delete Account
               </button>
-            </div>
-            
-            <div className={styles.modalBody}>
-              {editMode ? (
-                <>
-                  <div className={styles.formGroup}>
-                    <label className={styles.label}>Full Name</label>
-                    <input
-                      type="text"
-                      name="fullName"
-                      value={tempUserData.fullName}
-                      onChange={handleInputChange}
-                      className={styles.inputField}
-                    />
-                  </div>
-                  
-                  <div className={styles.formGroup}>
-                    <label className={styles.label}>Email</label>
-                    <input
-                      type="email"
-                      name="email"
-                      value={tempUserData.email}
-                      onChange={handleInputChange}
-                      className={styles.inputField}
-                    />
-                  </div>
-                  
-                  <div className={styles.formGroup}>
-                    <label className={styles.label}>Phone Number</label>
-                    <input
-                      type="tel"
-                      name="phone"
-                      value={tempUserData.phone}
-                      onChange={handleInputChange}
-                      className={styles.inputField}
-                    />
-                  </div>
-                  
-                  <div className={styles.formGroup}>
-                    <label className={styles.label}>Address</label>
-                    <textarea
-                      name="address"
-                      value={tempUserData.address}
-                      onChange={handleInputChange}
-                      className={styles.textareaField}
-                      rows="3"
-                    />
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div className={styles.profileField}>
-                    <span className={styles.fieldLabel}>Full Name:</span>
-                    <span className={styles.fieldValue}>{userData.fullName}</span>
-                  </div>
-                  
-                  <div className={styles.profileField}>
-                    <span className={styles.fieldLabel}>Username:</span>
-                    <span className={styles.fieldValue}>{userData.username}</span>
-                  </div>
-                  
-                  <div className={styles.profileField}>
-                    <span className={styles.fieldLabel}>Email:</span>
-                    <span className={styles.fieldValue}>{userData.email}</span>
-                  </div>
-                  
-                  <div className={styles.profileField}>
-                    <span className={styles.fieldLabel}>Phone:</span>
-                    <span className={styles.fieldValue}>{userData.phone}</span>
-                  </div>
-                  
-                  <div className={styles.profileField}>
-                    <span className={styles.fieldLabel}>NID:</span>
-                    <span className={styles.fieldValue}>{userData.nid}</span>
-                  </div>
-                  
-                  <div className={styles.profileField}>
-                    <span className={styles.fieldLabel}>Address:</span>
-                    <span className={styles.fieldValue}>{userData.address}</span>
-                  </div>
-                </>
-              )}
-            </div>
-            
-            <div className={styles.modalFooter}>
-              {editMode ? (
-                <>
-                  <button 
-                    className={`${styles.button} ${styles.saveButton}`}
-                    onClick={handleSaveChanges}
-                  >
-                    Save Changes
-                  </button>
-                  <button 
-                    className={`${styles.button} ${styles.cancelButton}`}
-                    onClick={handleCancelEdit}
-                  >
-                    Cancel
-                  </button>
-                </>
-              ) : (
-                <>
-                  <button 
-                    className={styles.button}
-                    onClick={() => setEditMode(true)}
-                  >
-                    Edit Profile
-                  </button>
-                  <button 
-                    className={styles.button}
-                    onClick={() => setShowProfileModal(false)}
-                  >
-                    Close
-                  </button>
-                </>
-              )}
-            </div>
+            </section>
           </div>
         </div>
-      )}
+
+        {/* Profile Modal */}
+        {showProfileModal && (
+          <div className={styles.modalOverlay}>
+            <div className={styles.modalContent}>
+              <div className={styles.modalHeader}>
+                <h2 className={styles.modalTitle}>Edit Profile</h2>
+                <button 
+                  className={styles.closeButton}
+                  onClick={() => {
+                    setShowProfileModal(false);
+                    setEditMode(false);
+                  }}
+                >
+                  <FiX />
+                </button>
+              </div>
+              
+              <div className={styles.modalBody}>
+                {editMode ? (
+                  <>
+                    <div className={styles.formGroup}>
+                      <label className={styles.label}>Full Name</label>
+                      <input
+                        type="text"
+                        name="fullName"
+                        value={tempUserData.fullName}
+                        onChange={handleInputChange}
+                        className={styles.input}
+                      />
+                    </div>
+                    
+                    <div className={styles.formGroup}>
+                      <label className={styles.label}>Email</label>
+                      <input
+                        type="email"
+                        name="email"
+                        value={tempUserData.email}
+                        onChange={handleInputChange}
+                        className={styles.input}
+                      />
+                    </div>
+                    
+                    <div className={styles.formGroup}>
+                      <label className={styles.label}>Phone Number</label>
+                      <input
+                        type="tel"
+                        name="phone"
+                        value={tempUserData.phone}
+                        onChange={handleInputChange}
+                        className={styles.input}
+                      />
+                    </div>
+                    
+                    <div className={styles.formGroup}>
+                      <label className={styles.label}>Address</label>
+                      <textarea
+                        name="address"
+                        value={tempUserData.address}
+                        onChange={handleInputChange}
+                        className={`${styles.input} ${styles.textarea}`}
+                      />
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className={styles.profileField}>
+                      <span className={styles.fieldLabel}>Full Name:</span>
+                      <span className={styles.fieldValue}>{userData.fullName}</span>
+                    </div>
+                    
+                    <div className={styles.profileField}>
+                      <span className={styles.fieldLabel}>Username:</span>
+                      <span className={styles.fieldValue}>{userData.username}</span>
+                    </div>
+                    
+                    <div className={styles.profileField}>
+                      <span className={styles.fieldLabel}>Email:</span>
+                      <span className={styles.fieldValue}>{userData.email}</span>
+                    </div>
+                    
+                    <div className={styles.profileField}>
+                      <span className={styles.fieldLabel}>Phone:</span>
+                      <span className={styles.fieldValue}>{userData.phone}</span>
+                    </div>
+                    
+                    <div className={styles.profileField}>
+                      <span className={styles.fieldLabel}>NID:</span>
+                      <span className={styles.fieldValue}>{userData.nid}</span>
+                    </div>
+                    
+                    <div className={styles.profileField}>
+                      <span className={styles.fieldLabel}>Address:</span>
+                      <span className={styles.fieldValue}>{userData.address}</span>
+                    </div>
+                  </>
+                )}
+              </div>
+              
+              <div className={styles.modalFooter}>
+                {editMode ? (
+                  <>
+                    <button 
+                      className={`${styles.button} ${styles.primaryButton}`}
+                      onClick={handleSaveChanges}
+                    >
+                      <FiCheck /> Save Changes
+                    </button>
+                    <button 
+                      className={`${styles.button} ${styles.secondaryButton}`}
+                      onClick={handleCancelEdit}
+                    >
+                      <FiX /> Cancel
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button 
+                      className={`${styles.button} ${styles.primaryButton}`}
+                      onClick={() => setEditMode(true)}
+                    >
+                      <FiEdit2 /> Edit Profile
+                    </button>
+                    <button 
+                      className={`${styles.button} ${styles.secondaryButton}`}
+                      onClick={() => setShowProfileModal(false)}
+                    >
+                      <FiX /> Close
+                    </button>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

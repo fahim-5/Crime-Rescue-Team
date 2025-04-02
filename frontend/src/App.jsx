@@ -56,13 +56,13 @@ function App() {
           <Route path="/alert" element={<CrimeAlerts />} />
           <Route path="/about" element={<About />} />
           <Route path="/reports" element={<UserReports />} />
-          <Route path="/public/settings" element={<PoliceSettings />} />
+          <Route path="/public/settings" element={<Settings />} />
 
           {/* police routes  */}
           <Route path="/police/dashboard" element={<PoliceDashboard />} />
           <Route path="/police/reports" element={<PoliceReports />} />
           <Route path="/police/analytics" element={<Analytics />} />
-          <Route path="/police/settings" element={<PoliceSettings />} />
+          <Route path="/police/settings" element={<Settings />} />
           <Route path="/police/pending" element={<PendingCases />} />
           <Route path="/police/resolved" element={<ResolvedCases />} />
 

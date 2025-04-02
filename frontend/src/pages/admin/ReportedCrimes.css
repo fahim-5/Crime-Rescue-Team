@@ -128,10 +128,12 @@
 .view-btn {
   background-color: #4c956a;
   color: white;
+  margin-bottom: 5px;
 }
 
 .view-btn:hover {
   background-color: #3a7352;
+  
 }
 
 .update-btn {

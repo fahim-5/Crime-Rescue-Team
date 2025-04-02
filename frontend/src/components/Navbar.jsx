@@ -145,7 +145,8 @@ const Navbar = () => {
   const getHomeLink = () => {
     if (user?.role === "admin") return "/admin/dashboard";
     if (user?.role === "police") return "/police/dashboard";
-    return "/"; // Root route for public users
+    if (user?.role === "public") return "/home";
+    return "/instructions"; // Root route for public users
   };
 
   // Determine if we should show auth links or profile button

@@ -1,70 +1,82 @@
-// src/pages/Home.jsx
-
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/useAuth"; // Correctly import the useAuth hook
-import "./Home.css"; // Updated CSS file
+import { useAuth } from "../../context/useAuth";
+import styles from "./Home.module.css";
+import { FiAlertTriangle, FiEye, FiShield, FiMapPin, FiUsers, FiBarChart2 } from "react-icons/fi";
 
 const Home = () => {
-  const { user } = useAuth(); // Destructure user from useAuth hook
-  const [profileOpen, setProfileOpen] = useState(false);
-  const navigate = useNavigate(); // Initialize navigate
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
-  // Toggle profile popup visibility
-  const toggleProfile = () => {
-    setProfileOpen(!profileOpen);
-  };
-
-  useEffect(() => {
-    // Optionally, you can check if the user is authenticated or not
-    if (!user) {
-      // If not logged in, redirect to login page (for example)
-      navigate("/login");
+  const features = [
+    {
+      icon: <FiAlertTriangle className={styles.featureIcon} />,
+      title: "Real-time Reporting",
+      description: "Instantly report criminal activities in your area with our easy-to-use interface."
+    },
+    {
+      icon: <FiEye className={styles.featureIcon} />,
+      title: "Community Watch",
+      description: "View and validate reports from other users to help authorities prioritize responses."
+    },
+    {
+      icon: <FiShield className={styles.featureIcon} />,
+      title: "Safety Analytics",
+      description: "Access crime statistics and safety tips tailored to your neighborhood."
     }
-  }, [user, navigate]);
+  ];
 
   return (
-    <div className="home-container">
-      <section className="welcome-section">
-        <h1 className="welcome-heading">Welcome to Safe Society</h1>
-        <p className="welcome-text">
-          Stay alert, stay safe! Report crimes in real-time and help us keep
-          your community safe. Your involvement is vital.
-        </p>
+    <div className={styles.container}>
+      <div className={styles.hero}>
+        <div className={styles.contentWrapper}>
+          <h1 className={styles.title}>
+            Welcome to <span className={styles.highlight}>Safe Society</span>
+          </h1>
+          <p className={styles.subtitle}>
+            Your vigilance makes our community safer. Report crimes, validate incidents,
+            and stay informed about safety in your neighborhood.
+          </p>
 
-        {/* Conditionally render based on user */}
-        {user ? (
-          <div>
-            <p>Welcome back, {user.full_name || user.username}!</p>{" "}
-            {/* Display the user's name */}
-            <button
-              className="report-button"
-              onClick={() => navigate("/report")}
-            >
-              Report a Crime
-            </button>
+          {user ? (
+            <div className={styles.userGreeting}>
+              Welcome back, {user.full_name || user.username}! Ready to make a difference today?
+            </div>
+          ) : (
+            <p className={styles.secondaryText}>
+              Sign in to access all safety features and contribute to your community.
+            </p>
+          )}
+
+          <div className={styles.ctaSection}>
+            {user && (
+              <button
+                className={styles.primaryButton}
+                onClick={() => navigate("/report")}
+              >
+                <FiAlertTriangle /> Report a Crime
+              </button>
+            )}
+            <p className={styles.secondaryText}>
+              View or validate existing reports{" "}
+              <a href="/reports" className={styles.link}>
+                here
+              </a>
+              .
+            </p>
           </div>
-        ) : (
-          <p>Please sign in to report crimes and stay safe.</p>
-        )}
 
-        <p className="cta-text">
-          Already reported? You can view or validate reports{" "}
-          <a href="/reports" className="cta-link">
-            here
-          </a>
-          .
-        </p>
-      </section>
-
-      {/* Optional Profile Popup */}
-      {profileOpen && (
-        <div className="profile-popup">
-          <p>User Profile</p>
-          {/* Render more user details here */}
-          <button onClick={toggleProfile}>Close</button>
+          <div className={styles.features}>
+            {features.map((feature, index) => (
+              <div key={index} className={styles.featureCard}>
+                {feature.icon}
+                <h3 className={styles.featureTitle}>{feature.title}</h3>
+                <p className={styles.featureDesc}>{feature.description}</p>
+              </div>
+            ))}
+          </div>
         </div>
-      )}
+      </div>
     </div>
   );
 };
