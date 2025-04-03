@@ -33,12 +33,13 @@ const Navbar = () => {
   const handleLogout = async (event) => {
     event.stopPropagation();
     try {
-      await authLogout(); // Ensure logout completes
-      showAlert("Logout successful");
+      await authLogout();
+      showAlert("Logout successful", "success");
       setProfileOpen(false);
-      navigate("/", { replace: true }); // Force redirect to root
+      navigate("/", { replace: true });
     } catch (error) {
       console.error("Logout error:", error);
+      showAlert("Logout failed", "error");
     }
   };
 
@@ -51,9 +52,11 @@ const Navbar = () => {
 
     if (profileOpen) {
       document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener("touchstart", handleClickOutside);
     }
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
     };
   }, [profileOpen]);
 
@@ -103,7 +106,6 @@ const Navbar = () => {
         </>
       );
     } else {
-      // Public user or not logged in
       return (
         <>
           {!user && (
@@ -141,24 +143,26 @@ const Navbar = () => {
     }
   };
 
-  // Determine the home link based on role
   const getHomeLink = () => {
     if (user?.role === "admin") return "/admin/dashboard";
     if (user?.role === "police") return "/police/dashboard";
     if (user?.role === "public") return "/home";
-    return "/instructions"; // Root route for public users
+    return "/instructions";
   };
 
-  // Determine if we should show auth links or profile button
   const showAuthLinks = () => {
     if (user) {
       return (
         <button onClick={toggleProfilePopup} className="profile-btn">
-          {user.name || "Guest"}
+          <span className="profile-btn-text">{user.name || "Guest"}</span>
+          <span className="profile-btn-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </span>
         </button>
       );
     } else {
-      // Show both buttons on most pages
       if (location.pathname !== "/" && location.pathname !== "/start") {
         return (
           <div className="auth-buttons-container">
@@ -170,17 +174,13 @@ const Navbar = () => {
             </Link>
           </div>
         );
-      }
-      // On login page, show only signup
-      else if (location.pathname === "/") {
+      } else if (location.pathname === "/") {
         return (
           <Link to="/start" className="auth-btn sign-up-btn">
             Sign Up
           </Link>
         );
-      }
-      // On signup page, show only signin
-      else if (location.pathname === "/start") {
+      } else if (location.pathname === "/start") {
         return (
           <Link to="/" className="auth-btn">
             Sign In
@@ -191,13 +191,13 @@ const Navbar = () => {
   };
 
   return (
-    <header>
+    <header className="navbar-container">
       <div className="navbar">
-        <Link to={getHomeLink()}>
+        <Link to={getHomeLink()} className="logo-link">
           <h1 className="logo">Stop Crime.</h1>
         </Link>
 
-        <nav>
+        <nav className="nav-menu">
           <ul className="nav-links">{getNavLinks()}</ul>
         </nav>
 
@@ -206,26 +206,38 @@ const Navbar = () => {
 
       {profileOpen && (
         <>
-          <div className="overlay" onClick={() => setProfileOpen(false)}></div>
+          <div className="profile-overlay" onClick={() => setProfileOpen(false)}></div>
           <div className="profile-popup" ref={popupRef}>
             <div className="profile-header">
-              <h2>{user?.name || "Guest"}</h2>
-              <span className="rank">Gold</span>
+              <div className="profile-avatar">
+                {user?.name?.charAt(0).toUpperCase() || "G"}
+              </div>
+              <div className="profile-info">
+                <h2 className="profile-name">{user?.name || "Guest User"}</h2>
+                <span className="profile-role">{user?.role || "Public"}</span>
+              </div>
             </div>
-            <p>
-              <strong>Username:</strong> {user?.name || "Guest"}
-            </p>
-            <p>
-              <strong>Role:</strong> {user?.role || "Public"}
-            </p>
-            <p>
-              <strong>Earned Points:</strong> 1200
-            </p>
-            {user && (
+
+            <div className="profile-stats">
+              <div className="stat-item">
+                <span className="stat-value">1,200</span>
+                <span className="stat-label">Points</span>
+              </div>
+              <div className="stat-item">
+                <span className="stat-value">Gold</span>
+                <span className="stat-label">Rank</span>
+              </div>
+            </div>
+
+            <div className="profile-actions">
+              <Link to={user?.role === "admin" ? "/admin/settings" : "/public/settings"} 
+                className="action-btn" onClick={() => setProfileOpen(false)}>
+                Account Settings
+              </Link>
               <button className="logout-btn" onClick={handleLogout}>
-                Logout
+                Sign Out
               </button>
-            )}
+            </div>
           </div>
         </>
       )}
