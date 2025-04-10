@@ -17,7 +17,7 @@ const Notifications = () => {
             id: 1,
             type: "alert",
             title: "Crime Alert",
-            message: "Armed robbery reported near Main Street and 5th Avenue. Suspect is described as wearing a red hoodie. Avoid the area and report any suspicious activity immediately.",
+            message: "Armed robbery reported near Main Street and 7th Avenue. Suspect is described as wearing a red hoodie. Avoid the area and report any suspicious activity immediately.",
             timestamp: "10 minutes ago",
             read: false
         },
